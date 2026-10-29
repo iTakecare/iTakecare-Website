@@ -1,0 +1,26 @@
+# Landing pages iTakecare, servies sur itakecare.be/lp à côté du site existant.
+# Le routeur Traefik ne prend que /lp* (pages + /lp-assets) avec une priorité élevée :
+# toutes les autres URLs continuent d'aller au site en place, qui n'est pas modifié.
+
+networks:
+  deploy_internal:
+    external: true
+
+services:
+  frontend:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.frontend
+    container_name: itakecare-landing
+    restart: unless-stopped
+    networks:
+      - deploy_internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=deploy_internal"
+      # www uniquement : itakecare.be/lp est d'abord redirigé vers www par le routeur du site existant.
+      - "traefik.http.routers.itakecare-landing.rule=Host(`www.itakecare.be`) && PathPrefix(`/lp`)"
+      - "traefik.http.routers.itakecare-landing.priority=1000"
+      - "traefik.http.routers.itakecare-landing.entrypoints=websecure"
+      - "traefik.http.routers.itakecare-landing.tls.certresolver=letsencrypt"
+      - "traefik.http.services.itakecare-landing.loadbalancer.server.port=80"

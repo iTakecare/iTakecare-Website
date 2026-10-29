@@ -1,0 +1,25 @@
+/* Le site n'utilise pas le preflight Tailwind : mini-reset limité aux LP.
+   :where() garde une spécificité nulle, les classes Tailwind gardent la main. */
+:where(.landing) *,
+:where(.landing) ::before,
+:where(.landing) ::after {
+  border-width: 0;
+  border-style: solid;
+  border-color: #e1e1e1;
+}
+
+:where(.landing) button,
+:where(.landing) input {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  margin: 0;
+}
+
+:where(.landing) button {
+  cursor: pointer;
+}
+
+:where(.landing) strong {
+  font-weight: 900;
+}
