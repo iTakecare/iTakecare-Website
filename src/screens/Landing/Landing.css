@@ -23,3 +23,263 @@
 :where(.landing) strong {
   font-weight: 900;
 }
+
+/* ---------- Palette des LP ----------
+   Turquoise iTakecare + cyan + violet doux pour les dégradés,
+   bleu nuit pour les sections sombres qui rassurent. */
+.landing {
+  --lp-teal: #48b5c3;
+  --lp-teal-dark: #2f97a6;
+  --lp-cyan: #22d3ee;
+  --lp-violet: #7c6cf0;
+  --lp-mint: #34d399;
+  --lp-night: #0b1f33;
+  --lp-night-2: #12324d;
+  --lp-gradient: linear-gradient(120deg, #48b5c3 0%, #22d3ee 45%, #7c6cf0 100%);
+}
+
+/* Texte en dégradé (mots-clés des titres, prix). */
+.lp-gradient-text {
+  background: var(--lp-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Fond « aurore » : halos de couleur qui dérivent lentement derrière le hero. */
+.lp-aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.lp-aurora::before,
+.lp-aurora::after,
+.lp-aurora > span {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  opacity: 0.55;
+  animation: lp-drift 18s ease-in-out infinite alternate;
+}
+
+.lp-aurora::before {
+  width: 46vw;
+  height: 46vw;
+  top: -18vw;
+  left: -10vw;
+  background: radial-gradient(circle, #48b5c3 0%, transparent 70%);
+}
+
+.lp-aurora::after {
+  width: 40vw;
+  height: 40vw;
+  top: -6vw;
+  right: -12vw;
+  background: radial-gradient(circle, #7c6cf0 0%, transparent 70%);
+  animation-delay: -6s;
+}
+
+.lp-aurora > span {
+  width: 36vw;
+  height: 36vw;
+  bottom: -20vw;
+  left: 30vw;
+  background: radial-gradient(circle, #22d3ee 0%, transparent 70%);
+  animation-delay: -12s;
+}
+
+@keyframes lp-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(4vw, 3vw, 0) scale(1.15);
+  }
+}
+
+/* Carte « verre dépoli ». */
+.lp-glass {
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 10px 40px rgba(11, 31, 51, 0.12);
+}
+
+.lp-glass-dark {
+  background: rgba(255, 255, 255, 0.06);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Bordure en dégradé (carte mise en avant, formulaire). */
+.lp-gradient-border {
+  position: relative;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    var(--lp-gradient) border-box;
+  border: 2px solid transparent;
+}
+
+/* Halo lumineux pulsé derrière un élément. */
+.lp-glow {
+  position: absolute;
+  inset: 8%;
+  border-radius: 9999px;
+  background: var(--lp-gradient);
+  filter: blur(60px);
+  opacity: 0.55;
+  animation: lp-pulse 6s ease-in-out infinite;
+}
+
+@keyframes lp-pulse {
+  0%,
+  100% {
+    transform: scale(0.95);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.7;
+  }
+}
+
+/* Flottement doux des badges et du visuel. */
+.lp-float {
+  animation: lp-float 6s ease-in-out infinite;
+}
+
+.lp-float-delay {
+  animation: lp-float 7s ease-in-out -3s infinite;
+}
+
+@keyframes lp-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* Bouton principal : dégradé + reflet qui passe toutes les quelques secondes. */
+.lp-cta {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 9999px;
+  color: #fff;
+  font-weight: 800;
+  background: linear-gradient(120deg, #2f97a6 0%, #48b5c3 35%, #22b8d6 65%, #6b5ce7 100%);
+  background-size: 200% 100%;
+  box-shadow:
+    0 10px 30px rgba(72, 181, 195, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background-position 0.6s ease;
+}
+
+.lp-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.55) 50%, transparent 65%);
+  transform: translateX(-120%);
+  animation: lp-shine 4.5s ease-in-out infinite;
+}
+
+.lp-cta:hover {
+  transform: translateY(-2px);
+  background-position: 100% 0;
+  box-shadow:
+    0 16px 40px rgba(124, 108, 240, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.lp-cta:disabled {
+  opacity: 0.6;
+  transform: none;
+}
+
+@keyframes lp-shine {
+  0%,
+  60% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+/* Grille de points discrète pour les sections claires. */
+.lp-dots {
+  background-image: radial-gradient(rgba(72, 181, 195, 0.18) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Section sombre « nuit » avec halos. */
+.lp-night {
+  background:
+    radial-gradient(60% 80% at 10% 0%, rgba(72, 181, 195, 0.35), transparent 60%),
+    radial-gradient(50% 70% at 100% 100%, rgba(124, 108, 240, 0.35), transparent 60%),
+    linear-gradient(160deg, #0b1f33 0%, #12324d 100%);
+}
+
+/* Icône dans une pastille en dégradé (une teinte par carte). */
+.lp-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(72, 181, 195, 0.35);
+}
+
+.lp-icon-0 {
+  background: linear-gradient(135deg, #48b5c3, #22d3ee);
+}
+.lp-icon-1 {
+  background: linear-gradient(135deg, #22d3ee, #7c6cf0);
+  box-shadow: 0 8px 20px rgba(124, 108, 240, 0.35);
+}
+.lp-icon-2 {
+  background: linear-gradient(135deg, #7c6cf0, #c084fc);
+  box-shadow: 0 8px 20px rgba(124, 108, 240, 0.35);
+}
+.lp-icon-3 {
+  background: linear-gradient(135deg, #34d399, #48b5c3);
+  box-shadow: 0 8px 20px rgba(52, 211, 153, 0.35);
+}
+
+/* Cartes qui se soulèvent au survol. */
+.lp-lift {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.lp-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(11, 31, 51, 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-aurora::before,
+  .lp-aurora::after,
+  .lp-aurora > span,
+  .lp-glow,
+  .lp-float,
+  .lp-float-delay,
+  .lp-cta::after {
+    animation: none;
+  }
+}

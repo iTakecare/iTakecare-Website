@@ -1,24 +1,26 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GlowButton } from "../../../components/GlowButton";
 import { submitLead, track } from "../lib/leads";
 
 const ChoiceStep = ({ question, options, value, onPick }) => (
   <fieldset>
-    <legend className="mb-4 text-lg font-bold text-[#222222]">{question}</legend>
+    <legend className="mb-4 text-lg font-bold text-[#0b1f33]">{question}</legend>
     <div className="grid gap-3">
       {options.map((option) => (
         <button
           key={option}
           type="button"
           onClick={() => onPick(option)}
-          className={`rounded-2xl border-2 px-5 py-4 text-left text-base font-medium transition-colors ${
+          className={`group flex items-center justify-between gap-3 rounded-2xl border-2 px-5 py-4 text-left text-base font-semibold text-[#0b1f33] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_25px_rgba(72,181,195,0.2)] ${
             value === option
-              ? "border-[#48b5c3] bg-[#48b5c31f] text-[#222222]"
-              : "border-[#e1e1e1] bg-white text-[#222222] hover:border-[#48b5c3]"
+              ? "border-[#48b5c3] bg-[linear-gradient(120deg,rgba(72,181,195,0.14),rgba(124,108,240,0.1))]"
+              : "border-[#0b1f33]/10 bg-white hover:border-[#48b5c3]"
           }`}
         >
           {option}
+          <span className="text-[#48b5c3] opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true">
+            →
+          </span>
         </button>
       ))}
     </div>
@@ -26,12 +28,12 @@ const ChoiceStep = ({ question, options, value, onPick }) => (
 );
 
 const Field = ({ label, required = true, ...props }) => (
-  <label className="flex flex-col gap-1.5 text-sm font-bold text-[#222222]">
+  <label className="flex flex-col gap-1.5 text-sm font-bold text-[#0b1f33]">
     {label}
     <input
       {...props}
       required={required}
-      className="rounded-2xl border-2 border-[#e1e1e1] bg-white px-4 py-3 text-base font-normal outline-none focus:border-[#48b5c3]"
+      className="rounded-2xl border-2 border-[#0b1f33]/10 bg-white px-4 py-3 text-base font-normal outline-none transition-shadow focus:border-[#48b5c3] focus:shadow-[0_0_0_4px_rgba(72,181,195,0.18)]"
     />
   </label>
 );
@@ -82,15 +84,17 @@ export const LeadForm = ({ vertical, need, onNeedChange }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative overflow-hidden rounded-[32px] bg-white p-6 shadow-xl md:p-8">
+    <form onSubmit={handleSubmit} className="lp-gradient-border relative overflow-hidden rounded-[32px] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.35)] md:p-8">
       <div className="mb-6 flex items-center gap-3">
         {[0, 1, 2].map((i) => (
           <span
             key={i}
-            className={`h-1.5 flex-1 rounded-full transition-colors ${i <= step ? "bg-[#48b5c3]" : "bg-[#e1e1e1]"}`}
+            className={`h-2 flex-1 rounded-full transition-all duration-500 ${
+              i <= step ? "bg-[linear-gradient(90deg,#48b5c3,#7c6cf0)]" : "bg-[#0b1f33]/10"
+            }`}
           />
         ))}
-        <span className="text-sm text-[#222222]/60">{step + 1}/3</span>
+        <span className="text-sm font-bold text-[#0b1f33]/50">{step + 1}/3</span>
       </div>
 
       {step === 0 && (
@@ -119,7 +123,7 @@ export const LeadForm = ({ vertical, need, onNeedChange }) => {
 
       {step === 2 && (
         <div className="flex flex-col gap-4">
-          <p className="text-lg font-bold text-[#222222]">Où pouvons-nous vous envoyer votre offre ?</p>
+          <p className="text-lg font-bold text-[#0b1f33]">Où pouvons-nous vous envoyer votre offre ?</p>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Prénom" name="firstName" autoComplete="given-name" value={contact.firstName} onChange={update("firstName")} />
             <Field label="Nom" name="lastName" autoComplete="family-name" value={contact.lastName} onChange={update("lastName")} />
@@ -144,18 +148,14 @@ export const LeadForm = ({ vertical, need, onNeedChange }) => {
             onChange={update("website")}
             className="absolute left-[-9999px] h-0 w-0 opacity-0"
           />
-          <label className="flex items-start gap-3 text-sm text-[#222222]/70">
+          <label className="flex items-start gap-3 text-sm text-[#0b1f33]/65">
             <input type="checkbox" name="consent" required checked={contact.consent} onChange={update("consent")} className="mt-1 h-4 w-4 accent-[#48b5c3]" />
             J'accepte d'être recontacté·e par iTakecare au sujet de ma demande, conformément à la politique de confidentialité.
           </label>
-          <GlowButton
-            variant="primary"
-            type="submit"
-            disabled={status === "sending"}
-            className="mt-2 w-full px-6 py-4 text-lg font-bold disabled:opacity-60"
-          >
+          <button type="submit" disabled={status === "sending"} className="lp-cta mt-2 w-full px-6 py-4 text-lg">
             {status === "sending" ? "Envoi…" : "Recevoir mon offre →"}
-          </GlowButton>
+          </button>
+          <p className="flex items-center justify-center gap-1.5 text-xs text-[#0b1f33]/50">🔒 Vos données servent uniquement à traiter votre demande.</p>
           {status === "error" && (
             <p className="text-sm text-red-600">Oups, l'envoi a échoué. Vérifiez vos informations et réessayez dans un instant.</p>
           )}
@@ -166,7 +166,7 @@ export const LeadForm = ({ vertical, need, onNeedChange }) => {
         <button
           type="button"
           onClick={() => setStep(step - 1)}
-          className="mt-5 text-sm text-[#222222]/60 hover:text-[#48b5c3]"
+          className="mt-5 text-sm text-[#0b1f33]/55 hover:text-[#2f97a6]"
         >
           ← Retour
         </button>

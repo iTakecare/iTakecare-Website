@@ -25,13 +25,13 @@ export const StickyCta = ({ label, priceFrom }) => {
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-50 flex items-center gap-3 border-t border-[#e1e1e1] bg-white/95 px-4 py-3 backdrop-blur transition-transform duration-300 md:hidden ${
+      className={`lp-glass fixed inset-x-0 bottom-0 z-50 flex items-center gap-3 rounded-t-[24px] px-4 py-3 transition-transform duration-300 md:hidden ${
         visible ? "translate-y-0" : "translate-y-full"
       }`}
     >
-      <div className="text-xs leading-tight text-[#222222]/70">
+      <div className="text-xs leading-tight text-[#0b1f33]/60">
         Dès
-        <div className="text-lg font-black text-[#222222]">{priceFrom} €</div>
+        <div className="lp-gradient-text text-lg font-black">{priceFrom} €</div>
         HTVA/mois
       </div>
       <CtaButton className="flex-1 !py-3 !text-base">{label}</CtaButton>

@@ -7,7 +7,7 @@ const PHONE = null;
 
 // Header de LP : logo + CTA uniquement, pas de menu (aucune fuite hors du funnel).
 export const LandingHeader = ({ cta }) => (
-  <header className="relative z-20 mx-auto mt-4 flex w-full max-w-[1320px] items-center gap-4 rounded-[50px] border-2 border-[#e1e1e1] bg-[#f8f8f6] px-4 py-2.5 md:mt-6 md:px-5 md:py-3">
+  <header className="lp-glass relative z-20 mx-auto mt-4 flex w-full max-w-[1320px] items-center gap-4 rounded-full px-4 py-2.5 md:mt-6 md:px-5 md:py-3">
     <img
       className="h-8 w-auto md:h-10"
       alt="iTakecare"
@@ -23,7 +23,7 @@ export const LandingHeader = ({ cta }) => (
           {PHONE.label}
         </a>
       )}
-      <CtaButton className="!px-4 !py-2 !text-sm md:!text-base">{cta}</CtaButton>
+      <CtaButton className="!px-5 !py-2.5 !text-sm md:!text-base">{cta}</CtaButton>
     </div>
   </header>
 );

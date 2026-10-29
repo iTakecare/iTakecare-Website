@@ -1,5 +1,4 @@
 import React from "react";
-import { GlowButton } from "../../../components/GlowButton";
 
 export const FORM_ANCHOR = "formulaire";
 
@@ -7,23 +6,37 @@ export const scrollToForm = () => {
   document.getElementById(FORM_ANCHOR)?.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
-// « Texte [surligné] » → le passage entre crochets prend la couleur de la marque.
+// « Texte [surligné] » → le passage entre crochets passe en dégradé de marque.
+// `pill` ajoute un trait lumineux dessous, pour les grands titres.
 export const Highlight = ({ text, pill = false }) =>
   text.split(/(\[[^\]]+\])/).map((part, i) =>
     part.startsWith("[") ? (
-      <span
-        key={i}
-        className={pill ? "rounded-[20px] bg-[#48b5c34f] px-2 text-[#48b5c3] [-webkit-box-decoration-break:clone] [box-decoration-break:clone]" : "text-[#48b5c3]"}
-      >
-        {part.slice(1, -1)}
+      <span key={i} className={pill ? "relative whitespace-nowrap" : undefined}>
+        <span className="lp-gradient-text">{part.slice(1, -1)}</span>
+        {pill && (
+          <span
+            aria-hidden="true"
+            className="absolute inset-x-0 -bottom-1 h-[0.18em] rounded-full bg-[linear-gradient(90deg,#48b5c3,#22d3ee,#7c6cf0)] opacity-60 blur-[1px]"
+          />
+        )}
       </span>
     ) : (
       <React.Fragment key={i}>{part}</React.Fragment>
     ),
   );
 
-export const SectionTitle = ({ title, subtitle, light = false }) => (
+export const SectionTitle = ({ eyebrow, title, subtitle, light = false }) => (
   <div className="mx-auto mb-10 max-w-3xl text-center md:mb-14">
+    {eyebrow && (
+      <span
+        className={`mb-4 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-[0.14em] ${
+          light ? "lp-glass-dark text-[#7fe3ee]" : "bg-[#48b5c31a] text-[#2f97a6]"
+        }`}
+      >
+        <span className="h-1.5 w-1.5 rounded-full bg-current" />
+        {eyebrow}
+      </span>
+    )}
     <h2 className={`text-3xl font-black leading-tight md:text-4xl lg:text-[42px] ${light ? "text-white" : "text-[#222222]"}`}>
       <Highlight text={title} />
     </h2>
@@ -34,13 +47,13 @@ export const SectionTitle = ({ title, subtitle, light = false }) => (
 );
 
 export const CtaButton = ({ children, onClick = scrollToForm, className = "" }) => (
-  <GlowButton
-    variant="primary"
+  <button
+    type="button"
     onClick={onClick}
-    className={`inline-flex items-center justify-center px-6 py-3.5 text-base font-bold md:text-lg ${className}`}
+    className={`lp-cta inline-flex items-center justify-center gap-2 px-7 py-4 text-base md:text-lg ${className}`}
   >
-    {children} →
-  </GlowButton>
+    {children} <span aria-hidden="true">→</span>
+  </button>
 );
 
 const PATHS = {
