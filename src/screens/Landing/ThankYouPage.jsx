@@ -6,6 +6,7 @@ import { track } from "./lib/leads";
 import { useLandingMeta } from "./useLandingMeta";
 import "./Landing.css";
 import { VERTICALS } from "./verticals";
+import { SanteThankYou } from "./sante/SantePage";
 import { LandingFooter } from "./sections/LandingFooter";
 
 const NEXT_STEPS = [
@@ -23,6 +24,7 @@ export const ThankYouPage = () => {
   }, []);
 
   if (!config) return <SiteRedirect />;
+  if (config.slug === "sante") return <SanteThankYou />;
   const { thankYou } = config;
 
   const book = () => {

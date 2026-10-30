@@ -5,9 +5,9 @@
 export const sante = {
   slug: "sante",
   meta: {
-    title: "Leasing informatique pour soignants indépendants — iTakecare",
+    title: "Votre informatique prend soin de vous — iTakecare Santé",
     description:
-      "Ordinateur, smartphone et accessoires reconditionnés en leasing pour infirmier·es et kinés indépendants. Maintenance incluse, remplacement sous 24h.",
+      "Ordinateur, smartphone et accompagnement réunis dans un loyer mensuel. Découvrez les packs iTakecare pour les soignants indépendants.",
   },
 
   hero: {

@@ -6,6 +6,7 @@ import { captureAttribution, track } from "./lib/leads";
 import { useLandingMeta } from "./useLandingMeta";
 import "./Landing.css";
 import { VERTICALS } from "./verticals";
+import { SantePage } from "./sante/SantePage";
 import { Benefits } from "./sections/Benefits";
 import { Comparison } from "./sections/Comparison";
 import { FinalCta } from "./sections/FinalCta";
@@ -33,6 +34,9 @@ const Landing = ({ vertical }) => {
     setNeed(packName);
     scrollToForm();
   };
+
+  // La page santé a son propre design (maquette du 30/10/2026).
+  if (vertical.slug === "sante") return <SantePage />;
 
   return (
     <main className="landing w-full overflow-x-hidden bg-white font-[Inter] text-[#222222]">
