@@ -4,22 +4,94 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchPartnerPacks, formatMonthly } from "../lib/catalog";
 import { submitLead, track } from "../lib/leads";
 import { sante } from "../verticals/sante";
 import heroImage from "./assets/hero-soignante.webp";
-import iwinImage from "./assets/pack-iwin.webp";
-import idiscoveryImage from "./assets/pack-idiscovery.webp";
+import pcImage from "./assets/pack-ultra-portable-pc.webp";
+import appleImage from "./assets/pack-ultra-portable-apple.webp";
+import mobileImage from "./assets/pack-ultra-mobile.webp";
 import kineImage from "./assets/quotidien-kine.webp";
 import logo from "./assets/logo-itakecare.png";
 import "./sante.css";
 
 const PRIVACY_URL = "https://www.itakecare.be/politique-confidentialite";
 
-// Choix « pack » du formulaire → pack du catalogue (prix + produits pour Leazr).
-const PACK_CHOICES = {
-  iWin: { label: "iWin · Windows", detail: "78,90 € HTVA / mois · 36 mois", packName: "Pack iWin" },
-  iDiscovery: { label: "iDiscovery · Apple", detail: "89,90 € HTVA / mois · 36 mois", packName: "Pack iDiscovery" },
-  Conseil: { label: "J’aimerais être conseillé·e", detail: "Ou composer un pack différent", packName: null },
+// Présentation des packs Pro Santé. Prix, produits et fiche viennent de verticals/sante.js
+// (et du catalogue en direct, voir usePacks).
+const PACK_DISPLAY = {
+  PC: {
+    tag: "ULTRA PORTABLE · WINDOWS",
+    image: pcImage,
+    alt: "Le pack Ultra Portable PC : ordinateur portable HP, écran Samsung, iPhone, AirPods et lecteur de cartes eID.",
+    title: "Ultra Portable PC",
+    tagline: "Efficace au cabinet. Léger en tournée.",
+    os: "Windows",
+    choice: "Ultra Portable PC · Windows",
+    equipment: [
+      ["Ordinateur", "HP ProBook 4 G1iR 16"],
+      ["Smartphone", "iPhone 17 Pro"],
+      ["Écran", "Samsung 27 pouces"],
+      ["Et aussi", "Lecteur eID · AirPods 4"],
+    ],
+  },
+  Apple: {
+    apple: true,
+    featured: true,
+    tag: "ULTRA PORTABLE · APPLE",
+    image: appleImage,
+    alt: "Le pack Ultra Portable Apple : MacBook Air, écran Samsung, iPhone, AirPods et lecteur de cartes eID.",
+    title: "Ultra Portable Apple",
+    tagline: "Votre univers Apple. Partout avec vous.",
+    os: "macOS",
+    choice: "Ultra Portable Apple · macOS",
+    equipment: [
+      ["Ordinateur", "MacBook Air 15 M4"],
+      ["Smartphone", "iPhone 17 Pro"],
+      ["Écran", "Samsung 27 pouces"],
+      ["Et aussi", "Lecteur eID · AirPods 4"],
+    ],
+  },
+  Mobile: {
+    apple: true,
+    tag: "ULTRA MOBILE · IPAD",
+    image: mobileImage,
+    alt: "Le pack Ultra Mobile : iPad Pro avec clavier et Apple Pencil, iPhone, AirPods et lecteur de cartes eID.",
+    title: "Ultra Mobile",
+    tagline: "Votre cabinet tient dans une tablette.",
+    os: "iPadOS",
+    choice: "Ultra Mobile · iPad",
+    equipment: [
+      ["Tablette", "iPad Pro M4 13 pouces 5G"],
+      ["Smartphone", "iPhone 17 Pro"],
+      ["Clavier, stylet", "Combo Touch · Pencil Pro"],
+      ["Et aussi", "Lecteur eID · AirPods 4"],
+    ],
+  },
+};
+
+// Dernier choix du formulaire, après les packs.
+const ADVICE_CHOICE = { label: "J’aimerais être conseillé·e", detail: "Ou composer un pack différent" };
+
+const toNumber = (price) => parseFloat(price.replace(",", "."));
+
+// Packs Pro Santé avec leur prix et leur fiche lus en direct sur la page partenaire « prosante » ;
+// les valeurs de verticals/sante.js servent en attendant la réponse ou si elle échoue.
+const usePacks = () => {
+  const [live, setLive] = useState({});
+  useEffect(() => {
+    let cancelled = false;
+    fetchPartnerPacks("prosante")
+      .then((result) => !cancelled && setLive(result))
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  return sante.packs.items.map((item) => {
+    const monthly = live[item.id]?.monthlyPrice ?? toNumber(item.price);
+    return { ...item, ...PACK_DISPLAY[item.key], monthly, price: formatMonthly(monthly), url: live[item.id]?.url ?? item.url };
+  });
 };
 
 const PROFESSIONS = [
@@ -35,7 +107,7 @@ const FAQ = [
   ],
   [
     "Que comprend exactement mon loyer ?",
-    "Le matériel du pack, les accessoires et Office 2024, ainsi que la maintenance, la garantie et le remplacement sous 24 h en cas de panne, selon les conditions du contrat. Votre devis précise la configuration et les modalités.",
+    "Le matériel et les accessoires du pack, ainsi que la maintenance, la garantie et le SLA Ultra, avec le remplacement sous 24 h en cas de panne, selon les conditions du contrat. Votre devis précise la configuration et les modalités.",
   ],
   [
     "Suis-je engagé pour 36 mois ?",
@@ -47,7 +119,7 @@ const FAQ = [
   ],
   [
     "Je veux une tablette ou un lecteur eID. C’est possible ?",
-    "Votre offre est personnalisable sur devis. Précisez les équipements souhaités et les outils que vous utilisez : votre conseiller vérifie la configuration adaptée.",
+    "Oui. Chaque pack comprend un lecteur de cartes eID Bluetooth, et le pack Ultra Mobile s’articule autour d’un iPad Pro 13 pouces. Pour un autre équipement, votre offre reste personnalisable sur devis : votre conseiller vérifie la configuration adaptée.",
   ],
   [
     "Le matériel reconditionné est-il garanti ?",
@@ -95,7 +167,7 @@ const Header = ({ onStart }) => (
   </header>
 );
 
-const Hero = ({ onStart }) => (
+const Hero = ({ onStart, fromPrice }) => (
   <section className="hero container" aria-labelledby="hero-title">
     <div className="hero-copy">
       <p className="eyebrow">
@@ -151,7 +223,8 @@ const Hero = ({ onStart }) => (
         <span>Votre pack complet dès</span>
         <div>
           <strong>
-            78,90<span> €</span>
+            {fromPrice}
+            <span> €</span>
           </strong>
           <span>HTVA / mois</span>
         </div>
@@ -190,7 +263,7 @@ const BenefitsBar = () => (
   </div>
 );
 
-const PackCard = ({ apple, tag, image, alt, name, tagline, os, price, equipment, packKey, url, onChoose }) => (
+const PackCard = ({ apple, featured, tag, image, alt, title, tagline, os, price, equipment, packKey, url, onChoose }) => (
   <article className={`pack-card${apple ? " apple" : ""}`}>
     <div className="pack-photo">
       <span className="pack-tag">{tag}</span>
@@ -199,7 +272,7 @@ const PackCard = ({ apple, tag, image, alt, name, tagline, os, price, equipment,
     <div className="pack-body">
       <div className="pack-title">
         <div>
-          <h3>{name}</h3>
+          <h3>{title}</h3>
           <p>{tagline}</p>
         </div>
         <span className="os">{os}</span>
@@ -224,10 +297,10 @@ const PackCard = ({ apple, tag, image, alt, name, tagline, os, price, equipment,
         ))}
       </ul>
       <p className="pack-included">
-        <Svg id="check" /> Maintenance, garantie & remplacement 24 h*
+        <Svg id="check" /> Maintenance, garantie & SLA Ultra*
       </p>
-      <a className={`button${apple ? "" : " button-outline"}`} href="#offre" onClick={() => onChoose(packKey)}>
-        Personnaliser mon {packKey} <Svg id="arrow" />
+      <a className={`button${featured ? "" : " button-outline"}`} href="#offre" onClick={() => onChoose(packKey)}>
+        Personnaliser mon pack {packKey} <Svg id="arrow" />
       </a>
       <a className="catalogue" href={url} target="_blank" rel="noopener noreferrer">
         Voir la fiche complète <span>↗</span>
@@ -236,7 +309,7 @@ const PackCard = ({ apple, tag, image, alt, name, tagline, os, price, equipment,
   </article>
 );
 
-const Packs = ({ onChoose }) => (
+const Packs = ({ packs, onChoose }) => (
   <section className="section packs-section container" id="packs" aria-labelledby="packs-title">
     <div className="section-heading">
       <div>
@@ -254,41 +327,9 @@ const Packs = ({ onChoose }) => (
       </p>
     </div>
     <div className="pack-grid">
-      <PackCard
-        tag="L’ESSENTIEL WINDOWS"
-        image={iwinImage}
-        alt="Illustration du pack Windows : ordinateur portable, smartphone, hub et souris."
-        name="Le pack iWin"
-        tagline="Efficace au cabinet. Léger en tournée."
-        os="Windows"
-        price="78,90"
-        equipment={[
-          ["Ordinateur", "HP ProBook 440 G11"],
-          ["Smartphone", "Samsung Galaxy S24 Ultra"],
-          ["Et aussi", "Hub USB-C, souris, Office 2024"],
-        ]}
-        packKey="iWin"
-        url="https://www.itakecare.be/catalogue/pack/265dce6d-454a-437d-a975-db4bb5acf466"
-        onChoose={onChoose}
-      />
-      <PackCard
-        apple
-        tag="L’EXPÉRIENCE APPLE"
-        image={idiscoveryImage}
-        alt="Illustration du pack Apple : ordinateur portable, smartphone, hub et souris."
-        name="Le pack iDiscovery"
-        tagline="Votre univers Apple. Partout avec vous."
-        os="macOS"
-        price="89,90"
-        equipment={[
-          ["Ordinateur", "MacBook Air 13 M4"],
-          ["Smartphone", "iPhone 16 Pro Max"],
-          ["Et aussi", "Hub USB-C, Magic Mouse 2, Office 2024"],
-        ]}
-        packKey="iDiscovery"
-        url="https://www.itakecare.be/catalogue/pack/fd591ae8-90ca-4668-9dd8-9c88984f9cb5"
-        onChoose={onChoose}
-      />
+      {packs.map(({ key, ...pack }) => (
+        <PackCard key={key} {...pack} packKey={key} onChoose={onChoose} />
+      ))}
     </div>
     <div className="packs-footnote">
       <p>Prix HTVA, leasing de 36 mois. Visuels à titre d’illustration ; configuration détaillée sur devis.</p>
@@ -476,7 +517,12 @@ const Faq = ({ onStart }) => {
 const EMPTY_CONTACT = { firstName: "", lastName: "", company: "", email: "", phone: "", message: "", website: "" };
 
 const LeadForm = ({ form }) => {
-  const { step, setStep, profession, setProfession, pack, setPack } = form;
+  const { step, setStep, profession, setProfession, pack, setPack, packs } = form;
+  // Choix de l'étape 2 : les packs (prix à jour), puis le conseil.
+  const packChoices = [
+    ...packs.map((item) => [item.key, { label: item.choice, detail: `${item.price} € HTVA / mois · 36 mois` }]),
+    ["Conseil", ADVICE_CHOICE],
+  ];
   const navigate = useNavigate();
   const [contact, setContact] = useState(EMPTY_CONTACT);
   const [invalid, setInvalid] = useState(null);
@@ -520,14 +566,13 @@ const LeadForm = ({ form }) => {
       return setError("Merci d’accepter d’être recontacté·e pour recevoir votre offre.");
     }
 
-    const choice = PACK_CHOICES[pack];
-    const catalogPack = sante.packs.items.find((item) => item.name === choice.packName);
+    const catalogPack = packs.find((item) => item.key === pack);
     setSending(true);
     try {
       await submitLead({
         vertical: sante.slug,
         profile: profession,
-        need: choice.packName ?? "Conseil personnalisé",
+        need: catalogPack?.name ?? "Conseil personnalisé",
         packPrice: catalogPack?.price,
         packProducts: catalogPack?.products ?? [],
         ...contact,
@@ -596,7 +641,7 @@ const LeadForm = ({ form }) => {
           </legend>
           <p className="form-hint">Votre choix reste ajustable avec votre conseiller.</p>
           <div className="choice-stack">
-            {Object.entries(PACK_CHOICES).map(([key, item]) => (
+            {packChoices.map(([key, item]) => (
               <label className="choice" key={key}>
                 <input
                   type="radio"
@@ -746,7 +791,7 @@ export const Footer = () => (
 );
 
 // Barre mobile : masquée quand le formulaire est à l'écran.
-const MobileCta = ({ onStart }) => {
+const MobileCta = ({ onStart, fromPrice }) => {
   const [hidden, setHidden] = useState(false);
   useEffect(() => {
     const target = document.getElementById("offre");
@@ -760,7 +805,7 @@ const MobileCta = ({ onStart }) => {
       <div>
         <small>Pack complet dès</small>
         <strong>
-          78,90 € <span>HTVA / mois</span>
+          {fromPrice} € <span>HTVA / mois</span>
         </strong>
       </div>
       <a className="button button-small" href="#offre" onClick={() => onStart()}>
@@ -774,6 +819,8 @@ export const SantePage = () => {
   const [step, setStep] = useState(1);
   const [profession, setProfession] = useState(null);
   const [pack, setPack] = useState(null);
+  const packs = usePacks();
+  const fromPrice = formatMonthly(Math.min(...packs.map((item) => item.monthly)));
 
   // Tout appel à l'action ramène au début du formulaire ; un bouton de pack pré-sélectionne ce pack.
   const start = (packKey) => {
@@ -786,20 +833,20 @@ export const SantePage = () => {
       <IconLibrary />
       <Header onStart={start} />
       <main id="main">
-        <Hero onStart={start} />
+        <Hero onStart={start} fromPrice={fromPrice} />
         <BenefitsBar />
-        <Packs onChoose={start} />
+        <Packs packs={packs} onChoose={start} />
         <Care onStart={start} />
         <Steps />
         <Comparison onStart={start} />
         <Faq onStart={start} />
-        <Offer form={{ step, setStep, profession, setProfession, pack, setPack }} />
+        <Offer form={{ step, setStep, profession, setProfession, pack, setPack, packs }} />
         <div className="conditions container">
           <p>* Délais de remplacement et de livraison selon les conditions du contrat, précisées dans votre devis.</p>
         </div>
       </main>
       <Footer />
-      <MobileCta onStart={start} />
+      <MobileCta onStart={start} fromPrice={fromPrice} />
     </div>
   );
 };

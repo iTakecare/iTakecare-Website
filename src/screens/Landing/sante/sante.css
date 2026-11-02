@@ -11,3 +11,8 @@ html:has(.sante-lp){scroll-behavior:smooth;scroll-padding-top:105px}
 .sante-lp .trap{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .sante-lp .button:disabled{opacity:.6;transform:none;cursor:default}
 @media(max-width:600px){.sante-lp .field-row{grid-template-columns:1fr;gap:0}}
+/* Trois packs Pro Santé : trois colonnes, puis deux + un centré sur tablette, une colonne sur mobile. */
+.sante-lp .pack-grid{grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:1100px){.sante-lp .pack-grid{gap:16px}}
+@media(max-width:1000px){.sante-lp .pack-grid{grid-template-columns:1fr 1fr}.sante-lp .pack-card:last-child{grid-column:1/-1;justify-self:center;width:calc(50% - 8px)}}
+@media(max-width:600px){.sante-lp .pack-grid{grid-template-columns:1fr;gap:24px}.sante-lp .pack-card:last-child{grid-column:auto;width:auto}}

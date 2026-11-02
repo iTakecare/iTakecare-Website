@@ -53,40 +53,64 @@ export const sante = {
     title: "Des packs prêts pour [vos tournées]",
     subtitle:
       "Ordinateur, smartphone et accessoires réunis dans un seul loyer. Tout est configurable sur devis.",
+    // Packs « Pro Santé » de la page partenaire https://www.itakecare.be/prosante (packs Leazr).
+    // `id` sert à relire le prix en direct ; `price` est le prix de secours (relevé le 02/11/2026).
+    // Les noms de produits sont ceux du catalogue, tels quels : ils partent avec le lead vers Leazr.
     items: [
       {
-        name: "Pack iWin",
-        tagline: "L'essentiel sous Windows, léger et efficace",
-        price: "78,90",
+        key: "PC",
+        id: "cb1ad865-0690-4f06-867c-1577226098e6",
+        name: "Pro Santé - Pack Ultra Portable PC + SLA Ultra",
+        tagline: "Windows, écran et smartphone, avec le SLA Ultra",
+        price: "110,75",
         image:
-          "https://api.leazr.co/storage/v1/object/public/pack-images/company-c1ce66bb-3ad2-474d-b477-583baa7ff1c0/packs/image-1781526388434-nscsa9i7esk.png",
+          "https://api.leazr.co/storage/v1/object/public/pack-images/company-c1ce66bb-3ad2-474d-b477-583baa7ff1c0/packs/image-1793639055520-za95r310cwb.png",
         products: [
-          "HP ProBook 440 G11",
-          "Samsung Galaxy S24 Ultra",
-          "Hub USB-C Ugreen Revodock 105",
-          "Souris MX Anywhere 3S",
-          "Microsoft Office 2024",
+          "Apple AirPods 4",
+          "Lecteur de cartes ied Bluetooth",
+          "ProBook 4 G1iR 16",
+          "Ecran SAMSUNG 27 pouces",
+          "iPhone 17 Pro",
         ],
-        url: "https://www.itakecare.be/catalogue/pack/265dce6d-454a-437d-a975-db4bb5acf466",
+        url: "https://www.itakecare.be/prosante/pack/0",
       },
       {
-        name: "Pack iDiscovery",
-        tagline: "L'univers Apple, ultra-léger pour les déplacements",
-        price: "89,90",
-        highlight: "Le plus choisi", // TODO : à confirmer avec les chiffres de vente
+        key: "Apple",
+        id: "d93c428f-237f-4e30-ae30-72ab96738ef7",
+        name: "Pro Santé - Pack Ultra Portable Apple + SLA Ultra",
+        tagline: "MacBook, écran et iPhone, avec le SLA Ultra",
+        price: "123,75",
         image:
-          "https://api.leazr.co/storage/v1/object/public/pack-images/company-c1ce66bb-3ad2-474d-b477-583baa7ff1c0/packs/image-1781526139571-nhf912jdldp.png",
+          "https://api.leazr.co/storage/v1/object/public/pack-images/company-c1ce66bb-3ad2-474d-b477-583baa7ff1c0/packs/image-1793639071030-w5djtomk11.png",
         products: [
-          "MacBook Air 13 M4",
-          "iPhone 16 Pro Max",
-          "Hub USB-C Ugreen Revodock 105",
-          "Magic Mouse 2",
-          "Microsoft Office 2024",
+          "Apple AirPods 4",
+          "Lecteur de cartes ied Bluetooth",
+          "Ecran SAMSUNG 27 pouces",
+          "iPhone 17 Pro",
+          "MacBook Air 15 M4",
         ],
-        url: "https://www.itakecare.be/catalogue/pack/fd591ae8-90ca-4668-9dd8-9c88984f9cb5",
+        url: "https://www.itakecare.be/prosante/pack/1",
+      },
+      {
+        key: "Mobile",
+        id: "0d57dc67-027a-445d-bec3-91dbd135487b",
+        name: "Pro Santé - Pack Ultra Mobile + SLA Ultra",
+        tagline: "iPad Pro et iPhone pour les tournées, avec le SLA Ultra",
+        price: "139,70",
+        image:
+          "https://api.leazr.co/storage/v1/object/public/pack-images/company-c1ce66bb-3ad2-474d-b477-583baa7ff1c0/packs/image-1793639027385-6jrzuh20j8s.png",
+        products: [
+          "iPad Pro M4 13 pouces",
+          "Apple Pencil Pro",
+          "Apple AirPods 4",
+          "Lecteur de cartes ied Bluetooth",
+          "iPhone 17 Pro",
+          "Logitech Combo Touch for iPad Pro 13",
+        ],
+        url: "https://www.itakecare.be/prosante/pack/2",
       },
     ],
-    note: "Prix HTVA par mois, leasing sur 36 mois. Maintenance, garantie et remplacement 24h inclus.",
+    note: "Prix HTVA par mois, leasing sur 36 mois. Maintenance, garantie et SLA Ultra inclus.",
   },
 
   benefits: {
