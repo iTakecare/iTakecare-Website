@@ -4,7 +4,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { submitLead, track } from "../lib/leads";
+import { captureAttribution, submitLead, track } from "../lib/leads";
 import { pme } from "../verticals/pme";
 import { Footer } from "../sante/SantePage";
 import heroImage from "./assets/hero-tpe-pme.webp";
@@ -14,6 +14,19 @@ import logo from "../sante/assets/logo-itakecare.png";
 import "./pme.css";
 
 const PRIVACY_URL = "https://www.itakecare.be/politique-confidentialite";
+
+// Tuile « composer en ligne » : prix du portable le moins cher du configurateur
+// (MacBook Air 13 M2, relevé le 02/11/2026). À mettre à jour si le catalogue change.
+const CONFIGURATOR_URL = "https://www.itakecare.be/catalogue/configurateur-pack";
+const CONFIGURATOR_FROM_PRICE = "33,95";
+
+// Les paramètres de la pub (utm, fbclid) suivent le visiteur vers le configurateur.
+const openConfigurator = (e) => {
+  const url = new URL(CONFIGURATOR_URL);
+  Object.entries(captureAttribution()).forEach(([key, value]) => url.searchParams.set(key, value));
+  e.currentTarget.href = url.toString();
+  track("CustomizeProduct", { content_category: pme.slug });
+};
 
 const PRIORITIES = [
   { value: "Trésorerie", icon: "clock", label: "Préserver ma trésorerie", hint: "Répartir le coût de l’équipement dans le temps" },
@@ -135,6 +148,7 @@ const IconLibrary = () => (
       <symbol id="laptop" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="12" rx="1" /><path d="m4 16-3 4h22l-3-4M9 20h6" /></symbol>
       <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></symbol>
       <symbol id="box" viewBox="0 0 24 24"><path d="m12 2 9 5v10l-9 5-9-5V7zm0 10 9-5M12 12 3 7m9 5v10M7 4.5l9 5" /></symbol>
+      <symbol id="cart" viewBox="0 0 24 24"><path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .8h9.7a1 1 0 0 0 1-.8L21 7H6" /><circle cx="9.5" cy="20" r="1.5" /><circle cx="17.5" cy="20" r="1.5" /></symbol>
     </defs>
   </svg>
 );
@@ -323,7 +337,7 @@ const Treasury = () => (
   </section>
 );
 
-const ProfileCard = ({ featured, tag, icon, title, text, points, priceTitle, priceText, cta, onClick }) => (
+const ProfileCard = ({ featured, tag, icon, title, text, points, priceTitle, priceText, cta, href = "#offre", external, onClick }) => (
   <article className={`profile-card${featured ? " featured" : ""}`}>
     <div className="profile-top">
       <span className="pack-tag-inline">{tag}</span>
@@ -342,7 +356,12 @@ const ProfileCard = ({ featured, tag, icon, title, text, points, priceTitle, pri
       <strong>{priceTitle}</strong>
       <span>{priceText}</span>
     </div>
-    <a className={`button${featured ? "" : " button-outline"}`} href="#offre" onClick={onClick}>
+    <a
+      className={`button${featured ? "" : " button-outline"}`}
+      href={href}
+      onClick={onClick}
+      {...(external && { target: "_blank", rel: "noopener noreferrer" })}
+    >
       {cta} <Svg id="arrow" />
     </a>
   </article>
@@ -400,10 +419,29 @@ const Solutions = ({ onStart }) => (
           cta="Construire un parc cohérent"
           onClick={() => onStart({ priority: "Parc cohérent" })}
         />
+        <ProfileCard
+          tag="COMPOSER EN LIGNE"
+          icon="cart"
+          title="Aller droit au but."
+          text="Vous savez ce qu’il vous faut ? Composez votre pack dans le configurateur et suivez votre mensualité en direct."
+          points={[
+            "Ordinateurs, écrans, smartphones et accessoires",
+            "Votre mensualité calculée au fil de vos choix",
+            "Une remise automatique selon le montant du pack",
+            "Maintenance et garantie swap incluses*",
+          ]}
+          priceTitle={`Dès ${CONFIGURATOR_FROM_PRICE} € / mois`}
+          priceText="HTVA · ordinateur portable, au catalogue"
+          cta="Composer mon pack"
+          href={CONFIGURATOR_URL}
+          external
+          onClick={openConfigurator}
+        />
       </div>
       <p className="solution-note">
         Configurations illustratives, à définir sur devis. Le matériel, les accessoires, les licences, le loyer et la
-        durée sont précisés dans votre offre.
+        durée sont précisés dans votre offre. Prix « dès » : ordinateur portable le moins cher du configurateur
+        (MacBook Air 13 M2), hors autres produits du pack.
       </p>
     </div>
   </section>

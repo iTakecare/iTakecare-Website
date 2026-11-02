@@ -11,3 +11,9 @@
 .pme-lp .trap{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .pme-lp .button:disabled{opacity:.6;transform:none;cursor:default}
 @media(max-width:600px){.pme-lp .field-row{grid-template-columns:1fr;gap:0}}
+/* Ajout : 3e tuile « composer en ligne » vers le configurateur du catalogue. */
+.pme-lp .profile-grid{grid-template-columns:repeat(3,1fr);gap:22px}
+@media(max-width:1100px){.pme-lp .profile-grid{gap:16px}}
+@media(max-width:1000px){.pme-lp .profile-grid{grid-template-columns:1fr 1fr}.pme-lp .profile-card:last-child{grid-column:1/-1}}
+@media(max-width:600px){.pme-lp .profile-grid{grid-template-columns:1fr;gap:21px}.pme-lp .profile-card:last-child{grid-column:auto}}
+@media(min-width:601px) and (max-width:1000px){.pme-lp .profile-card:last-child>.button{align-self:flex-start;width:calc(50% - 30px)}}
