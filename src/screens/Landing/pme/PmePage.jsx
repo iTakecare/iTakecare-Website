@@ -1,5 +1,5 @@
-// Landing page TPE/PME, d'après la maquette « iTakecare TPE/PME » du 02/11/2026
-// (palette bleu nuit / cuivre / ivoire, visuels générés, parcours en 9 temps, sans loyer affiché).
+// Landing page TPE/PME, d'après la maquette « iTakecare TPE/PME — palette bleue » du 02/11/2026
+// (palette bleu électrique / anthracite / gris clair, visuels générés, parcours en 9 temps, sans loyer affiché).
 // Le formulaire est le vrai : il passe par submitLead → landing-lead → Leazr (source funnelpme).
 
 import React, { useEffect, useRef, useState } from "react";
