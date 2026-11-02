@@ -7,6 +7,7 @@ import { useLandingMeta } from "./useLandingMeta";
 import "./Landing.css";
 import { VERTICALS } from "./verticals";
 import { SanteThankYou } from "./sante/SantePage";
+import { ImmobilierThankYou } from "./immobilier/ImmobilierPage";
 import { LandingFooter } from "./sections/LandingFooter";
 
 const NEXT_STEPS = [
@@ -25,6 +26,7 @@ export const ThankYouPage = () => {
 
   if (!config) return <SiteRedirect />;
   if (config.slug === "sante") return <SanteThankYou />;
+  if (config.slug === "immobilier") return <ImmobilierThankYou />;
   const { thankYou } = config;
 
   const book = () => {

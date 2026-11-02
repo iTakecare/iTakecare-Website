@@ -5,9 +5,9 @@
 export const immobilier = {
   slug: "immobilier",
   meta: {
-    title: "Leasing informatique pour agents immobiliers — iTakecare",
+    title: "Votre bureau vous suit. Votre activité avance. — iTakecare Immobilier",
     description:
-      "MacBook, iPhone et iPad reconditionnés en leasing pour agents immobiliers et agences. Maintenance incluse, remplacement sous 24h.",
+      "Performance, gain de temps et mobilité : découvrez les packs ordinateur et smartphone iTakecare pour les agents immobiliers indépendants et les agences.",
   },
 
   hero: {
@@ -53,10 +53,26 @@ export const immobilier = {
     title: "Des packs pensés pour [le terrain]",
     subtitle:
       "Ordinateur, smartphone et accessoires réunis dans un seul loyer. Pour un agent seul ou toute l'agence, configurable sur devis.",
+    // Packs de la page (maquette du 02/11/2026) : leur prix et leurs produits partent avec le lead.
     items: [
       {
+        name: "Pack iWin",
+        tagline: "Votre agence dans un format mobile",
+        price: "78,90",
+        image:
+          "https://api.leazr.co/storage/v1/object/public/pack-images/company-c1ce66bb-3ad2-474d-b477-583baa7ff1c0/packs/image-1781526388434-nscsa9i7esk.png",
+        products: [
+          "HP ProBook 440 G11",
+          "Samsung Galaxy S24 Ultra",
+          "Hub USB-C Ugreen Revodock 105",
+          "Souris MX Anywhere 3S",
+          "Microsoft Office 2024",
+        ],
+        url: "https://www.itakecare.be/catalogue/pack/265dce6d-454a-437d-a975-db4bb5acf466",
+      },
+      {
         name: "Pack iDiscovery",
-        tagline: "L'agent nomade : léger, autonome, efficace",
+        tagline: "Votre univers Apple, de l'agence au terrain",
         price: "89,90",
         image:
           "https://api.leazr.co/storage/v1/object/public/pack-images/company-c1ce66bb-3ad2-474d-b477-583baa7ff1c0/packs/image-1781526139571-nhf912jdldp.png",
@@ -68,37 +84,6 @@ export const immobilier = {
           "Microsoft Office 2024",
         ],
         url: "https://www.itakecare.be/catalogue/pack/fd591ae8-90ca-4668-9dd8-9c88984f9cb5",
-      },
-      {
-        name: "Pack iExplore",
-        tagline: "La puissance pour les photos, vidéos et visites virtuelles",
-        price: "119,90",
-        highlight: "Notre recommandation",
-        image:
-          "https://api.leazr.co/storage/v1/object/public/pack-images/company-c1ce66bb-3ad2-474d-b477-583baa7ff1c0/packs/image-1781526305170-ofs5io01iy9.png",
-        products: [
-          "MacBook Pro 14 M4",
-          "iPhone 17 Pro Max",
-          "Hub USB-C Ugreen Revodock 105",
-          "Magic Mouse 2",
-          "Microsoft Office 2024",
-        ],
-        url: "https://www.itakecare.be/catalogue/pack/8fa3a6d0-5daf-4237-a528-e1b469a44e6d",
-      },
-      {
-        name: "Pack iOdyssey",
-        tagline: "Le bureau complet, avec l'iPad pour les visites et signatures",
-        price: "198,90",
-        image:
-          "https://api.leazr.co/storage/v1/object/public/pack-images/company-c1ce66bb-3ad2-474d-b477-583baa7ff1c0/packs/image-1781526104656-ge3jzuhq7ja.png",
-        products: [
-          "MacBook Pro 16 M4 Pro",
-          "iPad Pro M4 11\" + Apple Pencil Pro",
-          "iPhone 17 Pro Max",
-          "AirPods 4",
-          "Hub USB-C, Magic Mouse 2, Office 2024",
-        ],
-        url: "https://www.itakecare.be/catalogue/pack/a84c0e22-eab2-4bfb-a86b-8f779ee32da7",
       },
     ],
     note: "Prix HTVA par mois, leasing sur 36 mois. Maintenance, garantie et remplacement 24h inclus.",
