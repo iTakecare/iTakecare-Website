@@ -110,7 +110,7 @@ export const sante = {
         url: "https://www.itakecare.be/prosante/pack/2",
       },
     ],
-    note: "Prix HTVA par mois, leasing sur 36 mois. Maintenance, garantie et SLA Ultra inclus.",
+    note: "Prix HTVA par mois, leasing sur 36 mois. Maintenance, garantie et SLA Ultra (matériel défectueux remplacé sous 24h) inclus.",
   },
 
   benefits: {

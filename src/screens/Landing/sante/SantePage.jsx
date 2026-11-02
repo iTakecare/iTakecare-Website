@@ -107,7 +107,7 @@ const FAQ = [
   ],
   [
     "Que comprend exactement mon loyer ?",
-    "Le matériel et les accessoires du pack, ainsi que la maintenance, la garantie et le SLA Ultra, avec le remplacement sous 24 h en cas de panne, selon les conditions du contrat. Votre devis précise la configuration et les modalités.",
+    "Le matériel et les accessoires du pack, la maintenance, la garantie et le SLA Ultra : un matériel défectueux est remplacé sous 24 h, selon les conditions du contrat. Votre devis précise la configuration et les modalités.",
   ],
   [
     "Suis-je engagé pour 36 mois ?",
@@ -242,7 +242,7 @@ const BenefitsBar = () => (
         <Svg id="refresh" />
         <p>
           <strong>Votre activité continue</strong>
-          <span>Remplacement sous 24 h en cas de panne*</span>
+          <span>SLA Ultra : matériel défectueux remplacé sous 24 h*</span>
         </p>
       </div>
       <div>
@@ -297,7 +297,7 @@ const PackCard = ({ apple, featured, tag, image, alt, title, tagline, os, price,
         ))}
       </ul>
       <p className="pack-included">
-        <Svg id="check" /> Maintenance, garantie & SLA Ultra*
+        <Svg id="check" /> SLA Ultra : matériel défectueux remplacé sous 24 h*
       </p>
       <a className={`button${featured ? "" : " button-outline"}`} href="#offre" onClick={() => onChoose(packKey)}>
         Personnaliser mon pack {packKey} <Svg id="arrow" />
@@ -383,7 +383,7 @@ const Care = ({ onStart }) => (
             ],
             [
               "Une solution en cas de panne",
-              "Le remplacement sous 24 h* vous aide à reprendre votre activité, sans attendre une longue réparation.",
+              "Avec le SLA Ultra, le matériel défectueux est remplacé sous 24 h* : vous reprenez votre activité sans attendre une longue réparation.",
             ],
           ].map(([title, text], i) => (
             <div key={title}>
@@ -455,7 +455,7 @@ const Comparison = ({ onStart }) => (
         {[
           ["Au démarrage", "Prix du matériel à payer", "Un loyer mensuel", false],
           ["Maintenance", "À organiser", "Déjà incluse", true],
-          ["En cas de panne", "Réparation à gérer", "Remplacement 24 h*", true],
+          ["En cas de panne", "Réparation à gérer", "SLA Ultra : remplacé sous 24 h*", true],
           ["Votre matériel", "Neuf ou d’occasion", "Reconditionné garanti", true],
         ].map(([label, buy, lease, check]) => (
           <div className="comparison-row" role="row" key={label}>
