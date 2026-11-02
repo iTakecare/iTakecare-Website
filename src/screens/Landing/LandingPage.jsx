@@ -8,6 +8,7 @@ import "./Landing.css";
 import { VERTICALS } from "./verticals";
 import { SantePage } from "./sante/SantePage";
 import { ImmobilierPage } from "./immobilier/ImmobilierPage";
+import { PmePage } from "./pme/PmePage";
 import { Benefits } from "./sections/Benefits";
 import { Comparison } from "./sections/Comparison";
 import { FinalCta } from "./sections/FinalCta";
@@ -40,6 +41,8 @@ const Landing = ({ vertical }) => {
   if (vertical.slug === "sante") return <SantePage />;
   // La page immobilier aussi (maquette du 02/11/2026).
   if (vertical.slug === "immobilier") return <ImmobilierPage />;
+  // Et la page TPE/PME (maquette du 02/11/2026).
+  if (vertical.slug === "pme") return <PmePage />;
 
   return (
     <main className="landing w-full overflow-x-hidden bg-white font-[Inter] text-[#222222]">

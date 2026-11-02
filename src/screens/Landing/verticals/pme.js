@@ -5,9 +5,9 @@
 export const pme = {
   slug: "pme",
   meta: {
-    title: "Leasing informatique pour TPE et PME — iTakecare",
+    title: "Votre trésorerie au service de vos projets — iTakecare TPE/PME",
     description:
-      "Ordinateurs, smartphones et accessoires reconditionnés en leasing pour TPE et PME. Loyer fixe, maintenance incluse, remplacement sous 24h.",
+      "Équipez votre petite entreprise avec un parc informatique cohérent, un loyer prévisible, la maintenance incluse et la garantie swap en cas de panne.",
   },
 
   hero: {
