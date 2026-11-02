@@ -5,7 +5,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchCheapestLaptop, formatMonthly } from "../lib/catalog";
-import { captureAttribution, submitLead, track } from "../lib/leads";
+import { submitLead, track, withAttribution } from "../lib/leads";
 import { pme } from "../verticals/pme";
 import { Footer } from "../sante/SantePage";
 import heroImage from "./assets/hero-tpe-pme.webp";
@@ -21,9 +21,7 @@ const CONFIGURATOR_URL = "https://www.itakecare.be/catalogue/configurateur-pack"
 
 // Les paramètres de la pub (utm, fbclid) suivent le visiteur vers le configurateur.
 const openConfigurator = (e) => {
-  const url = new URL(CONFIGURATOR_URL);
-  Object.entries(captureAttribution()).forEach(([key, value]) => url.searchParams.set(key, value));
-  e.currentTarget.href = url.toString();
+  e.currentTarget.href = withAttribution(CONFIGURATOR_URL);
   track("CustomizeProduct", { content_category: pme.slug });
 };
 

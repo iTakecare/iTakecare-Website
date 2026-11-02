@@ -23,6 +23,13 @@ export const track = (event, data = {}) => {
   if (typeof window.fbq === "function") window.fbq("track", event, data);
 };
 
+// Lien sortant vers le site (fiche, configurateur) : les paramètres de la pub suivent le visiteur.
+export const withAttribution = (href) => {
+  const url = new URL(href);
+  Object.entries(captureAttribution()).forEach(([key, value]) => url.searchParams.set(key, value));
+  return url.toString();
+};
+
 // Les leads passent par la fonction `landing-lead` du backend itakecare.be,
 // qui les transmet à Leazr avec la source du funnel (funnelsante, funnelimmo, funnelpme).
 const API_URL = import.meta.env.VITE_ITAKECARE_API_URL;

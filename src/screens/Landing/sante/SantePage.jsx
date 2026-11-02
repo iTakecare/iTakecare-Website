@@ -5,7 +5,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchPartnerPacks, formatMonthly } from "../lib/catalog";
-import { submitLead, track } from "../lib/leads";
+import { submitLead, track, withAttribution } from "../lib/leads";
 import { sante } from "../verticals/sante";
 import heroImage from "./assets/hero-soignante.webp";
 import pcImage from "./assets/pack-ultra-portable-pc.webp";
@@ -263,6 +263,12 @@ const BenefitsBar = () => (
   </div>
 );
 
+// Le bouton d'un pack ouvre sa fiche sur le site (/prosante/pack/N), avec les paramètres de la pub.
+const openPackPage = (e, url) => {
+  e.currentTarget.href = withAttribution(url);
+  track("CustomizeProduct", { content_category: sante.slug });
+};
+
 const PackCard = ({ apple, featured, tag, image, alt, title, tagline, os, price, equipment, packKey, url, onChoose }) => (
   <article className={`pack-card${apple ? " apple" : ""}`}>
     <div className="pack-photo">
@@ -299,11 +305,17 @@ const PackCard = ({ apple, featured, tag, image, alt, title, tagline, os, price,
       <p className="pack-included">
         <Svg id="check" /> SLA Ultra : matériel défectueux remplacé sous 24 h*
       </p>
-      <a className={`button${featured ? "" : " button-outline"}`} href="#offre" onClick={() => onChoose(packKey)}>
+      <a
+        className={`button${featured ? "" : " button-outline"}`}
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={(e) => openPackPage(e, url)}
+      >
         Personnaliser mon pack {packKey} <Svg id="arrow" />
       </a>
-      <a className="catalogue" href={url} target="_blank" rel="noopener noreferrer">
-        Voir la fiche complète <span>↗</span>
+      <a className="catalogue" href="#offre" onClick={() => onChoose(packKey)}>
+        Ou être conseillé·e sur ce pack <span>↗</span>
       </a>
     </div>
   </article>
