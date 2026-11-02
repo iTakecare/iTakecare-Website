@@ -4,6 +4,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchCheapestLaptop, formatMonthly } from "../lib/catalog";
 import { captureAttribution, submitLead, track } from "../lib/leads";
 import { pme } from "../verticals/pme";
 import { Footer } from "../sante/SantePage";
@@ -15,10 +16,8 @@ import "./pme.css";
 
 const PRIVACY_URL = "https://www.itakecare.be/politique-confidentialite";
 
-// Tuile « composer en ligne » : prix du portable le moins cher du configurateur
-// (MacBook Air 13 M2, relevé le 02/11/2026). À mettre à jour si le catalogue change.
+// Tuile « composer en ligne » : ouvre le configurateur de pack du catalogue.
 const CONFIGURATOR_URL = "https://www.itakecare.be/catalogue/configurateur-pack";
-const CONFIGURATOR_FROM_PRICE = "33,95";
 
 // Les paramètres de la pub (utm, fbclid) suivent le visiteur vers le configurateur.
 const openConfigurator = (e) => {
@@ -367,85 +366,104 @@ const ProfileCard = ({ featured, tag, icon, title, text, points, priceTitle, pri
   </article>
 );
 
-const Solutions = ({ onStart }) => (
-  <section className="solutions-band" id="solutions" aria-labelledby="solutions-title">
-    <div className="container">
-      <div className="section-heading">
-        <div>
-          <p className="eyebrow">UNE SOLUTION À LA TAILLE DE VOTRE ENTREPRISE</p>
-          <h2 id="solutions-title">
-            Un poste aujourd’hui.
+// Portable le moins cher du catalogue, chargé en direct (null tant qu'il n'est pas connu ou si l'appel échoue).
+const useCheapestLaptop = () => {
+  const [laptop, setLaptop] = useState(null);
+  useEffect(() => {
+    let cancelled = false;
+    fetchCheapestLaptop()
+      .then((result) => !cancelled && setLaptop(result))
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  return laptop;
+};
+
+const Solutions = ({ onStart }) => {
+  const laptop = useCheapestLaptop();
+  return (
+    <section className="solutions-band" id="solutions" aria-labelledby="solutions-title">
+      <div className="container">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">UNE SOLUTION À LA TAILLE DE VOTRE ENTREPRISE</p>
+            <h2 id="solutions-title">
+              Un poste aujourd’hui.
+              <br />
+              Un parc cohérent demain.
+            </h2>
+          </div>
+          <p>
+            Votre parc commence dès la première machine.{" "}
             <br />
-            Un parc cohérent demain.
-          </h2>
+            Il grandit avec votre activité.
+          </p>
         </div>
-        <p>
-          Votre parc commence dès la première machine.{" "}
-          <br />
-          Il grandit avec votre activité.
+        <div className="profile-grid">
+          <ProfileCard
+            tag="ÉQUIPER UN POSTE"
+            icon="laptop"
+            title="Bien démarrer."
+            text="En solo ou pour un premier équipement : une seule machine suffit. Elle pose la base de votre futur parc."
+            points={[
+              "Un ordinateur choisi selon l’usage",
+              "Les accessoires utiles au quotidien",
+              "Vos logiciels et leur compatibilité vérifiés",
+              "Maintenance et garantie swap incluses*",
+            ]}
+            priceTitle="Votre configuration."
+            priceText="Votre loyer, sur devis."
+            cta="Équiper un premier poste"
+            onClick={() => onStart({ priority: "Trésorerie", size: "1 à 5 postes" })}
+          />
+          <ProfileCard
+            featured
+            tag="HARMONISER UN PARC"
+            icon="shield"
+            title="Avancer ensemble."
+            text="Pour sortir des équipements disparates et créer une base commune à votre équipe."
+            points={[
+              "Des références définies par profil métier",
+              "Des accessoires et habitudes plus cohérents",
+              "Un renouvellement organisé avec vous",
+              "Maintenance et garantie swap incluses*",
+            ]}
+            priceTitle="Votre équipe."
+            priceText="Une offre pour votre parc."
+            cta="Construire un parc cohérent"
+            onClick={() => onStart({ priority: "Parc cohérent" })}
+          />
+          <ProfileCard
+            tag="COMPOSER EN LIGNE"
+            icon="cart"
+            title="Aller droit au but."
+            text="Vous savez ce qu’il vous faut ? Composez votre pack dans le configurateur et suivez votre mensualité en direct."
+            points={[
+              "Ordinateurs, écrans, smartphones et accessoires",
+              "Votre mensualité calculée au fil de vos choix",
+              "Une remise automatique selon le montant du pack",
+              "Maintenance et garantie swap incluses*",
+            ]}
+            priceTitle={laptop ? `Dès ${formatMonthly(laptop.monthlyPrice)} € / mois` : "Votre pack, à la carte."}
+            priceText={laptop ? "HTVA · ordinateur portable, au catalogue" : "Prix affichés en direct dans le configurateur."}
+            cta="Composer mon pack"
+            href={CONFIGURATOR_URL}
+            external
+            onClick={openConfigurator}
+          />
+        </div>
+        <p className="solution-note">
+          Configurations illustratives, à définir sur devis. Le matériel, les accessoires, les licences, le loyer et la
+          durée sont précisés dans votre offre.
+          {laptop &&
+            ` Prix « dès » : ordinateur portable le moins cher du configurateur (${laptop.name}), hors autres produits du pack.`}
         </p>
       </div>
-      <div className="profile-grid">
-        <ProfileCard
-          tag="ÉQUIPER UN POSTE"
-          icon="laptop"
-          title="Bien démarrer."
-          text="En solo ou pour un premier équipement : une seule machine suffit. Elle pose la base de votre futur parc."
-          points={[
-            "Un ordinateur choisi selon l’usage",
-            "Les accessoires utiles au quotidien",
-            "Vos logiciels et leur compatibilité vérifiés",
-            "Maintenance et garantie swap incluses*",
-          ]}
-          priceTitle="Votre configuration."
-          priceText="Votre loyer, sur devis."
-          cta="Équiper un premier poste"
-          onClick={() => onStart({ priority: "Trésorerie", size: "1 à 5 postes" })}
-        />
-        <ProfileCard
-          featured
-          tag="HARMONISER UN PARC"
-          icon="shield"
-          title="Avancer ensemble."
-          text="Pour sortir des équipements disparates et créer une base commune à votre équipe."
-          points={[
-            "Des références définies par profil métier",
-            "Des accessoires et habitudes plus cohérents",
-            "Un renouvellement organisé avec vous",
-            "Maintenance et garantie swap incluses*",
-          ]}
-          priceTitle="Votre équipe."
-          priceText="Une offre pour votre parc."
-          cta="Construire un parc cohérent"
-          onClick={() => onStart({ priority: "Parc cohérent" })}
-        />
-        <ProfileCard
-          tag="COMPOSER EN LIGNE"
-          icon="cart"
-          title="Aller droit au but."
-          text="Vous savez ce qu’il vous faut ? Composez votre pack dans le configurateur et suivez votre mensualité en direct."
-          points={[
-            "Ordinateurs, écrans, smartphones et accessoires",
-            "Votre mensualité calculée au fil de vos choix",
-            "Une remise automatique selon le montant du pack",
-            "Maintenance et garantie swap incluses*",
-          ]}
-          priceTitle={`Dès ${CONFIGURATOR_FROM_PRICE} € / mois`}
-          priceText="HTVA · ordinateur portable, au catalogue"
-          cta="Composer mon pack"
-          href={CONFIGURATOR_URL}
-          external
-          onClick={openConfigurator}
-        />
-      </div>
-      <p className="solution-note">
-        Configurations illustratives, à définir sur devis. Le matériel, les accessoires, les licences, le loyer et la
-        durée sont précisés dans votre offre. Prix « dès » : ordinateur portable le moins cher du configurateur
-        (MacBook Air 13 M2), hors autres produits du pack.
-      </p>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 // Onglets accessibles : flèches gauche/droite, Début et Fin déplacent la sélection.
 const Day = ({ onStart }) => {
