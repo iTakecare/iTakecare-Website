@@ -22,7 +22,7 @@ const PRIORITIES = [
 ];
 
 const SIZES = [
-  { value: "1 à 5 postes", hint: "Un premier équipement ou une petite équipe" },
+  { value: "1 à 5 postes", hint: "Dès un seul poste, en solo ou en petite équipe" },
   { value: "6 à 20 postes", hint: "Un parc à organiser ou à renouveler" },
   { value: "Plus de 20 postes", hint: "Une approche adaptée à plusieurs profils" },
 ];
@@ -54,7 +54,7 @@ const SITUATIONS = [
     caption: "ACCUEILLIR · ÉQUIPER · DÉVELOPPER",
     eyebrow: "L’ENTREPRISE GRANDIT",
     title: ["Un collègue arrive.", "Vous avez une base."],
-    text: "Un poste supplémentaire peut s’appuyer sur les choix déjà faits pour votre équipe. Vous préparez son équipement avec une vision plus claire.",
+    text: "Votre deuxième poste comme le dixième s’appuie sur les choix déjà faits. Vous préparez son équipement avec une vision plus claire.",
     points: [
       "Des besoins et logiciels identifiés en amont",
       "Un poste adapté au rôle du collaborateur",
@@ -87,6 +87,11 @@ const FAQ = [
     "Comment le leasing aide-t-il à préserver ma trésorerie ?",
     "Le coût de l’équipement est réparti dans un loyer plutôt que concentré dans un achat comptant. Le montant, la durée et les modalités de paiement sont définis dans votre offre pour vous donner de la visibilité.",
   ],
+  // Objection des indépendants : « un parc, ce n'est pas pour moi qui n'ai qu'un ordinateur ».
+  [
+    "Je travaille en solo, avec un seul ordinateur. Est-ce pour moi ?",
+    "Oui. Votre parc peut commencer avec une seule machine, dans le même cadre : loyer prévisible, maintenance incluse et garantie swap. Le jour où vous ajoutez un poste ou accueillez un collaborateur, il s’appuie sur la même base, avec le même interlocuteur.",
+  ],
   [
     "Comment garder la maîtrise de mes coûts informatiques ?",
     "Votre offre précise le loyer, sa durée et les services compris. Vous pouvez ainsi anticiper les mensualités et le périmètre couvert par la maintenance et la garantie swap. Les licences, options et prestations hors périmètre sont identifiées dans le devis, pour garder une vision claire de votre budget.",
@@ -102,10 +107,6 @@ const FAQ = [
   [
     "Comment fonctionne la garantie swap ?",
     "Vous signalez la panne à votre point de contact. Après diagnostic d’une panne couverte, le remplacement du matériel est organisé suivant les conditions du contrat. Les délais, les modalités de livraison ou de retour et les responsabilités concernant les données sont précisés dans votre offre.",
-  ],
-  [
-    "Est-ce adapté à une entreprise de quelques personnes ?",
-    "Oui. La proposition part du nombre de postes et des usages de votre entreprise, qu’il s’agisse d’un premier équipement ou d’un parc à harmoniser. L’objectif est une solution proportionnée à vos besoins.",
   ],
   [
     "Puis-je garder mes logiciels et choisir Windows ou Apple ?",
@@ -179,8 +180,8 @@ const Hero = ({ onStart }) => (
         <em>de vos projets.</em>
       </h1>
       <p className="hero-description">
-        Anticipez vos coûts informatiques avec un loyer prévisible, un parc cohérent, la maintenance incluse et la
-        garantie swap en cas de panne.
+        Anticipez vos coûts informatiques avec un loyer prévisible, la maintenance incluse, la garantie swap et un
+        parc cohérent dès le premier poste.
       </p>
       <div className="hero-actions">
         <a className="button" href="#offre" onClick={() => onStart()}>
@@ -191,7 +192,7 @@ const Hero = ({ onStart }) => (
         </a>
       </div>
       <p className="reassurance">
-        <Svg id="check" /> Devis sans engagement <span>·</span> Une offre adaptée à votre équipe
+        <Svg id="check" /> Devis sans engagement <span>·</span> Une offre adaptée à votre activité
       </p>
     </div>
     <div className="hero-visual">
@@ -234,7 +235,7 @@ const BenefitsBar = () => (
     <div className="container benefits-grid four-benefits">
       {[
         ["clock", "Préservez votre trésorerie", "Coût étalé, mensualités connues"],
-        ["laptop", "Un parc plus cohérent", "Une base commune, adaptée aux métiers"],
+        ["laptop", "Un parc qui grandit avec vous", "Dès une machine, au rythme de votre activité"],
         ["headset", "Maintenance incluse", "Un suivi prévu pour votre matériel"],
         ["refresh", "Garantie swap*", "Un remplacement prévu en cas de panne couverte"],
       ].map(([icon, title, text]) => (
@@ -360,9 +361,9 @@ const Solutions = ({ onStart }) => (
           </h2>
         </div>
         <p>
-          On part de vos usages et de votre équipe.{" "}
+          Votre parc commence dès la première machine.{" "}
           <br />
-          Votre offre se construit avec vous.
+          Il grandit avec votre activité.
         </p>
       </div>
       <div className="profile-grid">
@@ -370,7 +371,7 @@ const Solutions = ({ onStart }) => (
           tag="ÉQUIPER UN POSTE"
           icon="laptop"
           title="Bien démarrer."
-          text="Pour un premier équipement, un renouvellement ou l’arrivée d’un collaborateur."
+          text="En solo ou pour un premier équipement : une seule machine suffit. Elle pose la base de votre futur parc."
           points={[
             "Un ordinateur choisi selon l’usage",
             "Les accessoires utiles au quotidien",
@@ -900,9 +901,9 @@ const MobileCta = ({ onStart }) => {
   return (
     <div className={`mobile-cta${hidden ? " is-hidden" : ""}`}>
       <div>
-        <small>Pour votre entreprise</small>
+        <small>Dès un seul poste</small>
         <strong>
-          Une offre <span>adaptée à votre parc</span>
+          Une offre <span>adaptée à votre activité</span>
         </strong>
       </div>
       <a className="button button-small" href="#offre" onClick={() => onStart()}>

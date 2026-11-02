@@ -7,7 +7,7 @@ export const pme = {
   meta: {
     title: "Votre trésorerie au service de vos projets — iTakecare TPE/PME",
     description:
-      "Équipez votre petite entreprise avec un parc informatique cohérent, un loyer prévisible, la maintenance incluse et la garantie swap en cas de panne.",
+      "Indépendant ou petite entreprise : construisez un parc informatique cohérent dès un seul poste, avec un loyer prévisible, la maintenance incluse et la garantie swap en cas de panne.",
   },
 
   hero: {
