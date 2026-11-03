@@ -30,6 +30,11 @@ export const withAttribution = (href) => {
   return url.toString();
 };
 
+// Téléphone obligatoire dans les formulaires : chiffres, espaces et + . / - ( ),
+// de 9 à 15 chiffres (fixe ou mobile belge, format international).
+export const isValidPhone = (value) =>
+  /^\+?[\d\s./()-]+$/.test(value.trim()) && /^\d{9,15}$/.test(value.replace(/\D/g, ""));
+
 // Les leads passent par la fonction `landing-lead` du backend itakecare.be,
 // qui les transmet à Leazr avec la source du funnel (funnelsante, funnelimmo, funnelpme).
 const API_URL = import.meta.env.VITE_ITAKECARE_API_URL;

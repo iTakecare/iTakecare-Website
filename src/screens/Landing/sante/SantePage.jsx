@@ -5,7 +5,7 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchPartnerPacks, formatMonthly } from "../lib/catalog";
-import { submitLead, track, withAttribution } from "../lib/leads";
+import { isValidPhone, submitLead, track, withAttribution } from "../lib/leads";
 import { sante } from "../verticals/sante";
 import heroImage from "./assets/hero-soignante.webp";
 import pcImage from "./assets/pack-ultra-portable-pc.webp";
@@ -631,6 +631,10 @@ const LeadForm = ({ form }) => {
       setInvalid("email");
       return setError("Indiquez une adresse e-mail valide.");
     }
+    if (!isValidPhone(contact.phone)) {
+      setInvalid("phone");
+      return setError(contact.phone.trim() ? "Indiquez un numéro de téléphone valide." : "Indiquez votre numéro de téléphone.");
+    }
     // État réel de la case (l'auto-remplissage peut la cocher sans passer par onChange).
     if (!e.currentTarget.elements.consent?.checked) {
       return setError("Merci d’accepter d’être recontacté·e pour recevoir votre offre.");
@@ -756,8 +760,8 @@ const LeadForm = ({ form }) => {
             <input {...fieldProps("email")} type="email" autoComplete="email" maxLength={180} placeholder="vous@exemple.be" />
           </label>
           <label className="field">
-            Téléphone <span>(facultatif)</span>
-            <input {...fieldProps("phone")} type="tel" autoComplete="tel" maxLength={30} placeholder="Pour un échange plus direct" />
+            Votre téléphone *
+            <input {...fieldProps("phone")} type="tel" autoComplete="tel" maxLength={30} placeholder="Ex. 0470 12 34 56" />
           </label>
           <label className="field">
             Votre cabinet ou société <span>(facultatif)</span>

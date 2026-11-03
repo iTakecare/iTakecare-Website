@@ -4,7 +4,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { submitLead, track } from "../lib/leads";
+import { isValidPhone, submitLead, track } from "../lib/leads";
 import { immobilier } from "../verticals/immobilier";
 import { Footer } from "../sante/SantePage";
 import heroImage from "./assets/hero-mobilite.webp";
@@ -619,6 +619,10 @@ const LeadForm = ({ form }) => {
       setInvalid("email");
       return setError("Indiquez une adresse e-mail valide.");
     }
+    if (!isValidPhone(contact.phone)) {
+      setInvalid("phone");
+      return setError(contact.phone.trim() ? "Indiquez un numéro de téléphone valide." : "Indiquez votre numéro de téléphone.");
+    }
     // État réel de la case (l'auto-remplissage peut la cocher sans passer par onChange).
     if (!e.currentTarget.elements.consent?.checked) {
       return setError("Merci d’accepter d’être recontacté·e pour recevoir votre offre.");
@@ -760,8 +764,8 @@ const LeadForm = ({ form }) => {
             />
           </label>
           <label className="field">
-            Téléphone <span>(facultatif)</span>
-            <input {...fieldProps("phone")} type="tel" autoComplete="tel" maxLength={30} placeholder="Pour en parler directement" />
+            Votre téléphone *
+            <input {...fieldProps("phone")} type="tel" autoComplete="tel" maxLength={30} placeholder="Ex. 0470 12 34 56" />
           </label>
           <label className="field">
             Vos logiciels ou votre besoin <span>(facultatif)</span>
