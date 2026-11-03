@@ -639,6 +639,7 @@ const LeadForm = ({ form }) => {
         need: catalogPack?.name ?? "Conseil personnalisé",
         packPrice: catalogPack?.price,
         packProducts: catalogPack?.products ?? [],
+        packId: catalogPack?.id,
         ...contact,
         consent: true,
       });
