@@ -81,11 +81,11 @@ const SITUATIONS = [
     caption: "SIGNALER · DIAGNOSTIQUER · REMPLACER",
     eyebrow: "LE REMPLACEMENT EST PRÉVU",
     title: ["Une panne survient.", "Vous savez qui appeler."],
-    text: "Vous avez un point de contact pour le diagnostic et le suivi. En cas de panne couverte, la garantie swap prévoit le remplacement du matériel selon votre contrat.",
+    text: "Vous avez un point de contact pour le diagnostic et le suivi. En cas de panne couverte, la garantie swap prévoit le remplacement du matériel.",
     points: [
       "Une prise en charge à activer auprès de votre contact",
       "Un échange organisé pour le matériel concerné",
-      "Des conditions et des délais définis dans l’offre",
+      "Une activité qui reprend vite",
     ],
     cta: "Je veux un matériel bien accompagné",
     priority: "Maintenance et swap",
@@ -177,7 +177,7 @@ const Header = ({ onStart }) => (
   </header>
 );
 
-const Hero = ({ onStart }) => (
+const Hero = ({ onStart, laptop }) => (
   <section className="hero container" aria-labelledby="hero-title">
     <div className="hero-copy">
       <p className="eyebrow">
@@ -225,18 +225,31 @@ const Hero = ({ onStart }) => (
           <span>Un point de contact pour votre entreprise.</span>
         </div>
       </div>
-      <div className="hero-price sme-budget">
-        <span>Une solution pensée pour votre activité</span>
-        <div>
-          <strong>
-            Du matériel suivi.{" "}
-            <br />
-            Des coûts mieux anticipés.
-          </strong>
+      {laptop ? (
+        <div className="hero-price">
+          <span>Un ordinateur portable dès</span>
+          <div>
+            <strong>
+              {formatMonthly(laptop.monthlyPrice)}
+              <span> €</span>
+            </strong>
+            <span>HTVA / mois</span>
+          </div>
+          <small>Maintenance incluse · Garantie swap*</small>
         </div>
-        <small>Maintenance incluse · Garantie swap*</small>
-      </div>
-      <span className="visual-caption">PHOTOGRAPHIE D’ILLUSTRATION</span>
+      ) : (
+        <div className="hero-price sme-budget">
+          <span>Une solution pensée pour votre activité</span>
+          <div>
+            <strong>
+              Du matériel suivi.{" "}
+              <br />
+              Des coûts mieux anticipés.
+            </strong>
+          </div>
+          <small>Maintenance incluse · Garantie swap*</small>
+        </div>
+      )}
     </div>
   </section>
 );
@@ -310,15 +323,15 @@ const Treasury = () => (
           plus lisible.
         </h3>
         <p>
-          Le loyer et les services compris sont définis dans votre offre. Vous pouvez prévoir le budget de votre parc et
-          identifier les options avant de vous engager.
+          Un loyer fixe, les services compris, aucune surprise : vous connaissez le budget de votre parc avant de vous
+          engager.
         </p>
       </div>
       <ul>
         {[
-          ["Des mensualités connues", "Montant et durée précisés dans votre proposition."],
+          ["Des mensualités connues", "Un montant fixe, chaque mois, pendant toute la durée."],
           ["La maintenance incluse", "Les prestations couvertes font partie de votre solution."],
-          ["Un cadre pour les pannes", "Le remplacement est prévu par la garantie swap, selon le contrat."],
+          ["Un cadre pour les pannes", "Le remplacement est prévu par la garantie swap*."],
         ].map(([title, text]) => (
           <li key={title}>
             <Svg id="check" />
@@ -329,7 +342,6 @@ const Treasury = () => (
           </li>
         ))}
       </ul>
-      <p className="cost-control-note">Licences, options et prestations hors périmètre sont précisées dans le devis.</p>
     </div>
   </section>
 );
@@ -379,8 +391,7 @@ const useCheapestLaptop = () => {
   return laptop;
 };
 
-const Solutions = ({ onStart }) => {
-  const laptop = useCheapestLaptop();
+const Solutions = ({ onStart, laptop }) => {
   return (
     <section className="solutions-band" id="solutions" aria-labelledby="solutions-title">
       <div className="container">
@@ -453,8 +464,7 @@ const Solutions = ({ onStart }) => {
           />
         </div>
         <p className="solution-note">
-          Configurations illustratives, à définir sur devis. Le matériel, les accessoires, les licences, le loyer et la
-          durée sont précisés dans votre offre.
+          Configurations à définir sur devis.
           {laptop &&
             ` Prix « dès » : ordinateur portable le moins cher du configurateur (${laptop.name}), hors autres produits du pack.`}
         </p>
@@ -579,7 +589,7 @@ const Services = () => (
             "refresh",
             "GARANTIE SWAP",
             ["Une panne couverte ?", "Le remplacement est prévu."],
-            "Après diagnostic, nous organisons l’échange du matériel concerné selon les modalités de votre contrat, pour vous aider à reprendre l’activité.",
+            "Après diagnostic, nous organisons l’échange du matériel concerné pour que vous repreniez l’activité au plus vite.",
           ],
         ].map(([icon, label, title, text]) => (
           <article key={label}>
@@ -594,10 +604,6 @@ const Services = () => (
           </article>
         ))}
       </div>
-      <p className="continuity-note">
-        * Périmètre de maintenance, couverture de la garantie swap, conditions de remplacement et délais précisés dans
-        votre offre. Les modalités relatives aux données sont définies dans votre offre.
-      </p>
     </div>
   </section>
 );
@@ -625,7 +631,7 @@ const Steps = () => (
           [
             "box",
             "On organise l’équipement",
-            "La configuration, la mise à disposition et le suivi sont préparés avec vous, selon les modalités convenues.",
+            "Votre matériel arrive configuré, prêt à l’emploi, et son suivi est organisé avec vous.",
           ],
         ].map(([icon, title, text], i) => (
           <article key={title}>
@@ -947,7 +953,7 @@ const Offer = ({ form }) => (
 );
 
 // Barre mobile : masquée quand le formulaire est à l'écran.
-const MobileCta = ({ onStart }) => {
+const MobileCta = ({ onStart, laptop }) => {
   const [hidden, setHidden] = useState(false);
   useEffect(() => {
     const target = document.getElementById("offre");
@@ -959,10 +965,21 @@ const MobileCta = ({ onStart }) => {
   return (
     <div className={`mobile-cta${hidden ? " is-hidden" : ""}`}>
       <div>
-        <small>Dès un seul poste</small>
-        <strong>
-          Une offre <span>adaptée à votre activité</span>
-        </strong>
+        {laptop ? (
+          <>
+            <small>Ordinateur portable dès</small>
+            <strong>
+              {formatMonthly(laptop.monthlyPrice)} € <span>HTVA / mois</span>
+            </strong>
+          </>
+        ) : (
+          <>
+            <small>Dès un seul poste</small>
+            <strong>
+              Une offre <span>adaptée à votre activité</span>
+            </strong>
+          </>
+        )}
       </div>
       <a className="button button-small" href="#offre" onClick={() => onStart()}>
         Mon offre <Svg id="arrow" />
@@ -975,6 +992,7 @@ export const PmePage = () => {
   const [step, setStep] = useState(1);
   const [priority, setPriority] = useState(null);
   const [size, setSize] = useState(null);
+  const laptop = useCheapestLaptop();
 
   // Tout appel à l'action ramène au début du formulaire ; une carte ou une situation pré-sélectionne ses choix.
   const start = ({ priority: priorityKey, size: sizeKey } = {}) => {
@@ -991,10 +1009,10 @@ export const PmePage = () => {
       </a>
       <Header onStart={start} />
       <main id="main">
-        <Hero onStart={start} />
+        <Hero onStart={start} laptop={laptop} />
         <BenefitsBar />
         <Treasury />
-        <Solutions onStart={start} />
+        <Solutions onStart={start} laptop={laptop} />
         <Day onStart={start} />
         <Services />
         <Steps />
@@ -1003,12 +1021,12 @@ export const PmePage = () => {
         <div className="conditions container">
           <p>
             * Maintenance et garantie swap selon le périmètre, les conditions et les délais du contrat. Configurations,
-            loyers, durée et licences à définir sur devis. Photos générées à titre d’illustration.
+            loyers, durée et licences à définir sur devis. Photos d’illustration.
           </p>
         </div>
       </main>
       <Footer />
-      <MobileCta onStart={start} />
+      <MobileCta onStart={start} laptop={laptop} />
     </div>
   );
 };

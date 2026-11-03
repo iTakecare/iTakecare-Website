@@ -5,7 +5,7 @@
 export const sante = {
   slug: "sante",
   meta: {
-    title: "Votre informatique prend soin de vous — iTakecare Santé",
+    title: "Plus de temps pour vos patients, moins pour l’informatique — iTakecare Santé",
     description:
       "Ordinateur, smartphone et accompagnement réunis dans un loyer mensuel. Découvrez les packs iTakecare pour les soignants indépendants.",
   },

@@ -230,7 +230,6 @@ const Hero = ({ onStart, fromPrice }) => (
         </div>
         <small>Matériel + maintenance + garantie · 36 mois</small>
       </div>
-      <span className="visual-caption">PHOTOGRAPHIE D’ILLUSTRATION</span>
     </div>
   </section>
 );
@@ -263,7 +262,7 @@ const BenefitsBar = () => (
   </div>
 );
 
-// Le bouton d'un pack ouvre sa fiche sur le site (/prosante/pack/N), avec les paramètres de la pub.
+// Le lien secondaire d’un pack ouvre sa fiche sur le site (/prosante/pack/N), avec les paramètres de la pub.
 const openPackPage = (e, url) => {
   e.currentTarget.href = withAttribution(url);
   track("CustomizeProduct", { content_category: sante.slug });
@@ -305,17 +304,11 @@ const PackCard = ({ apple, featured, tag, image, alt, title, tagline, os, price,
       <p className="pack-included">
         <Svg id="check" /> SLA Ultra : matériel défectueux remplacé sous 24 h*
       </p>
-      <a
-        className={`button${featured ? "" : " button-outline"}`}
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={(e) => openPackPage(e, url)}
-      >
-        Personnaliser mon pack {packKey} <Svg id="arrow" />
+      <a className={`button${featured ? "" : " button-outline"}`} href="#offre" onClick={() => onChoose(packKey)}>
+        Recevoir mon offre {packKey} <Svg id="arrow" />
       </a>
-      <a className="catalogue" href="#offre" onClick={() => onChoose(packKey)}>
-        Ou être conseillé·e sur ce pack <span>↗</span>
+      <a className="catalogue" href={url} target="_blank" rel="noopener noreferrer" onClick={(e) => openPackPage(e, url)}>
+        Voir et personnaliser la fiche <span>↗</span>
       </a>
     </div>
   </article>

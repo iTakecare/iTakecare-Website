@@ -226,7 +226,6 @@ const Hero = ({ onStart }) => (
         </div>
         <small>Leasing sur 36 mois · Configuration personnalisable</small>
       </div>
-      <span className="visual-caption">PHOTOGRAPHIE D’ILLUSTRATION</span>
     </div>
   </section>
 );
@@ -293,7 +292,7 @@ const PackCard = ({ apple, tag, image, alt, name, tagline, os, price, equipment,
         ))}
       </ul>
       <p className="pack-included">
-        <Svg id="check" /> Configuration & accompagnement à préciser sur devis
+        <Svg id="check" /> Maintenance et garantie incluses
       </p>
       <a className={`button${apple ? "" : " button-outline"}`} href="#offre" onClick={() => onStart({ pack: packKey })}>
         Personnaliser mon {packKey} <Svg id="arrow" />
@@ -491,12 +490,12 @@ const Support = () => (
         [
           "shield",
           "Un cadre clair pour le suivi",
-          "Maintenance, garantie et prise en charge : votre devis précise les services, les conditions et les délais applicables.",
+          "Maintenance et garantie incluses : vous savez qui appeler quand un appareil fait défaut.",
         ],
         [
           "leaf",
           "Un choix responsable, un loyer fixe",
-          "Du matériel reconditionné pour votre activité. Votre configuration et votre mensualité sont définies dans l’offre.",
+          "Du matériel reconditionné, testé et garanti, pour une mensualité fixe pendant tout le contrat.",
         ],
       ].map(([icon, title, text]) => (
         <article key={title}>
@@ -521,7 +520,7 @@ const Steps = () => (
         {[
           ["laptop", "Vous parlez de votre activité", "Vos déplacements, vos logiciels, votre équipe : nous identifions ce qui compte pour vous."],
           ["check", "Vous recevez une offre claire", "Matériel, loyer et services détaillés. Vous validez uniquement quand la solution vous convient."],
-          ["box", "Votre équipement vous rejoint", "La configuration et la livraison sont organisées avec vous, selon les modalités de votre offre."],
+          ["box", "Votre équipement vous rejoint", "Votre matériel arrive configuré et prêt à l’emploi, au moment convenu avec vous."],
         ].map(([icon, title, text], i) => (
           <article key={title}>
             <span className="step-number">0{i + 1}</span>
@@ -900,7 +899,7 @@ export const ImmobilierPage = () => {
         <div className="conditions container">
           <p>
             Tarifs et compositions repris du catalogue iTakecare. Prix HTVA, leasing sur 36 mois. Disponibilité,
-            configurations, logiciels et services à confirmer dans votre offre. Photos générées à titre d’illustration.
+            configurations, logiciels et services à confirmer dans votre offre. Photos d’illustration.
           </p>
         </div>
       </main>
