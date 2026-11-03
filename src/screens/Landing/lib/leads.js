@@ -4,6 +4,7 @@ import { getConsent, readPixelCookies, trackPixel } from "./pixel";
 
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid"];
 const STORAGE_KEY = "itc_attribution";
+export const BOOKING_TOKEN_KEY = "itc_booking_token";
 
 // À appeler à l'arrivée sur la LP : garde les paramètres de la pub pour le formulaire.
 export const captureAttribution = () => {
@@ -67,4 +68,13 @@ export const submitLead = async (lead) => {
   });
   if (!response.ok) throw new Error(`Lead non envoyé (${response.status})`);
   lastLeadEventId = eventId;
+
+  // Jeton de prise de RDV renvoyé par Leazr : la page de remerciement affiche les créneaux avec.
+  const { bookingToken } = await response.json().catch(() => ({}));
+  try {
+    if (bookingToken) sessionStorage.setItem(BOOKING_TOKEN_KEY, bookingToken);
+    else sessionStorage.removeItem(BOOKING_TOKEN_KEY);
+  } catch {
+    // stockage indisponible (navigation privée) : pas de réservation en ligne, le conseiller appelle
+  }
 };

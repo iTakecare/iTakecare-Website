@@ -4,6 +4,7 @@
 
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { GoogleRating } from "../components/GoogleRating";
+import { BookingWidget } from "../components/BookingWidget";
 import { useNavigate } from "react-router-dom";
 import { fetchPartnerPacks, formatMonthly } from "../lib/catalog";
 import { isValidPhone, submitLead, track, withAttribution } from "../lib/leads";
@@ -943,6 +944,7 @@ export const SanteThankYou = () => (
                 de la suite.
               </h3>
               <p>Un conseiller iTakecare vous recontacte sous 24 h ouvrables avec une offre adaptée à votre pratique.</p>
+              <BookingWidget category="sante" />
               <dl>
                 <dt>1</dt>
                 <dd>Vous recevez un e-mail de confirmation.</dd>

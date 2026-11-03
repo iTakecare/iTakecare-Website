@@ -4,6 +4,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { GoogleRating } from "../components/GoogleRating";
+import { BookingWidget } from "../components/BookingWidget";
 import { useNavigate } from "react-router-dom";
 import { isValidPhone, submitLead, track } from "../lib/leads";
 import { immobilier } from "../verticals/immobilier";
@@ -975,6 +976,7 @@ export const ImmobilierThankYou = () => (
                 prend forme.
               </h3>
               <p>Un conseiller iTakecare vous recontacte sous 24 h ouvrables avec une offre adaptée à votre activité.</p>
+              <BookingWidget category="immobilier" />
               <dl>
                 <dt>1</dt>
                 <dd>Vous recevez un e-mail de confirmation.</dd>

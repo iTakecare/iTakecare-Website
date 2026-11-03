@@ -1,0 +1,98 @@
+/* Couleurs reprises de la landing page qui l'affiche (--ink, --line, --muted, --accent ou --green). */
+.booking-widget {
+  --booking-accent: var(--accent, var(--green, #1c6555));
+  margin: 0 0 28px;
+  padding: 20px;
+  border: 1px solid var(--line, #d9dfe7);
+  border-radius: 16px;
+  background: var(--white, #fff);
+  color: var(--ink, #202735);
+  text-align: left;
+}
+
+.booking-widget .booking-title {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.booking-widget .booking-hint {
+  margin: 0 0 16px;
+  font-size: 14px;
+  color: var(--muted, #4e5866);
+}
+
+.booking-widget .booking-days {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+  scrollbar-width: thin;
+}
+
+.booking-widget button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.booking-widget .booking-days button,
+.booking-widget .booking-times button {
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--line, #d9dfe7);
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+.booking-widget .booking-times {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.booking-widget .booking-days button.is-active,
+.booking-widget .booking-times button.is-active {
+  border-color: var(--booking-accent);
+  background: var(--booking-accent);
+  color: #fff;
+}
+
+.booking-widget .booking-confirm {
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--booking-accent);
+  color: #fff;
+  font-weight: 700;
+}
+
+.booking-widget .booking-confirm::first-letter {
+  text-transform: uppercase;
+}
+
+.booking-widget .booking-confirm:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.booking-widget .booking-error {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: #b42318;
+}
+
+.booking-widget.booking-done {
+  border-color: var(--booking-accent);
+}
+
+.booking-widget.booking-done p:not(.booking-hint) {
+  margin: 0 0 8px;
+}
