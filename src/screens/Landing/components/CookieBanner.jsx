@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { getConsent, setConsent } from "../lib/pixel";
+import React, { useEffect, useState } from "react";
+import { getConsent, initTracking, setConsent } from "../lib/pixel";
 import "./CookieBanner.css";
 
 const PRIVACY_URL = "https://www.itakecare.be/politique-confidentialite";
 
-// Bannière RGPD des LP : le pixel Meta ne se charge qu'après « Accepter ».
+// Bannière RGPD des LP : le pixel Meta et Clarity ne se chargent qu'après « Accepter ».
 // Refuser est aussi simple qu'accepter ; le choix est retenu (localStorage).
 export const CookieBanner = () => {
   const [visible, setVisible] = useState(() => !getConsent());
+  useEffect(initTracking, []);
   if (!visible) return null;
 
   const decide = (value) => {
@@ -18,8 +19,8 @@ export const CookieBanner = () => {
   return (
     <div className="itc-cookie" role="dialog" aria-live="polite" aria-label="Gestion des cookies">
       <p>
-        Nous utilisons des cookies de mesure publicitaire (Meta) pour savoir quelles annonces vous ont amené ici et
-        améliorer nos campagnes.{" "}
+        Nous utilisons des cookies de mesure d’audience (Microsoft Clarity) et publicitaire (Meta) pour améliorer
+        cette page et nos campagnes.{" "}
         <a href={PRIVACY_URL} target="_blank" rel="noopener noreferrer">
           En savoir plus
         </a>

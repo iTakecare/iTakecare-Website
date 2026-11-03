@@ -1,8 +1,9 @@
-// Pixel Meta des landing pages (« Pixel de Compte pub - iTakecare »).
-// RGPD : rien n'est chargé ni envoyé à Meta avant « Accepter » dans la bannière cookies.
+// Pixel Meta des landing pages (« Pixel de Compte pub - iTakecare ») et Microsoft Clarity.
+// RGPD : rien n'est chargé ni envoyé à Meta ou Microsoft avant « Accepter » dans la bannière cookies.
 // Les événements survenus avant la décision attendent ici et partent à l'acceptation.
 
 const PIXEL_ID = "281347450810783";
+const CLARITY_ID = "z7u86ultb8";
 const CONSENT_KEY = "itc_cookie_consent";
 const pending = [];
 
@@ -39,6 +40,25 @@ const loadPixel = () => {
   window.fbq("track", "PageView");
 };
 
+const loadClarity = () => {
+  if (window.clarity) return;
+  // Code fourni par Clarity (projet « Landing page iTakecare »).
+  /* eslint-disable */
+  (function (c, l, a, r, i, t, y) {
+    c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+    t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+    y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+  })(window, document, "clarity", "script", CLARITY_ID);
+  /* eslint-enable */
+};
+
+// Visiteur qui a déjà accepté lors d'une visite précédente : on charge tout dès l'arrivée.
+export const initTracking = () => {
+  if (getConsent() !== "granted") return;
+  loadPixel();
+  loadClarity();
+};
+
 // « granted » ou « denied », retenu pour les visites suivantes.
 export const setConsent = (value) => {
   try {
@@ -48,6 +68,7 @@ export const setConsent = (value) => {
   }
   if (value === "granted") {
     loadPixel();
+    loadClarity();
     pending.splice(0).forEach(([event, data, options]) => window.fbq("track", event, data, options));
   } else {
     pending.length = 0;
