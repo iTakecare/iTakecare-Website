@@ -3,6 +3,7 @@
 // Le formulaire est le vrai : il passe par submitLead → landing-lead → Leazr (source funnelsante).
 
 import React, { Fragment, useEffect, useRef, useState } from "react";
+import { GoogleRating } from "../components/GoogleRating";
 import { useNavigate } from "react-router-dom";
 import { fetchPartnerPacks, formatMonthly } from "../lib/catalog";
 import { isValidPhone, submitLead, track, withAttribution } from "../lib/leads";
@@ -193,6 +194,7 @@ const Hero = ({ onStart, fromPrice }) => (
       <p className="reassurance">
         <Svg id="check" /> Devis sans engagement <span>·</span> Réponse sous 24 h ouvrables
       </p>
+      <GoogleRating />
     </div>
     <div className="hero-visual">
       <div className="photo-frame">

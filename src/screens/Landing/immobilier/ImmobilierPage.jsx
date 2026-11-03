@@ -3,6 +3,7 @@
 // Le formulaire est le vrai : il passe par submitLead → landing-lead → Leazr (source funnelimmo).
 
 import React, { useEffect, useRef, useState } from "react";
+import { GoogleRating } from "../components/GoogleRating";
 import { useNavigate } from "react-router-dom";
 import { isValidPhone, submitLead, track } from "../lib/leads";
 import { immobilier } from "../verticals/immobilier";
@@ -190,6 +191,7 @@ const Hero = ({ onStart }) => (
       <p className="reassurance">
         <Svg id="check" /> Devis sans engagement <span>·</span> Un conseiller en Belgique
       </p>
+      <GoogleRating />
     </div>
     <div className="hero-visual">
       <div className="photo-frame">
