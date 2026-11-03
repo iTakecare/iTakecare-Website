@@ -1,5 +1,7 @@
 // Suivi des campagnes (UTM / fbclid), événements Meta Pixel et envoi des leads.
 
+import { trackPixel } from "./pixel";
+
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid"];
 const STORAGE_KEY = "itc_attribution";
 
@@ -18,10 +20,8 @@ export const captureAttribution = () => {
   }
 };
 
-// Le pixel Meta (fbq) est chargé ailleurs, après consentement cookies. Sans lui, on ne fait rien.
-export const track = (event, data = {}) => {
-  if (typeof window.fbq === "function") window.fbq("track", event, data);
-};
+// Événement Meta Pixel, envoyé seulement si le visiteur accepte les cookies (voir pixel.js).
+export const track = (event, data = {}) => trackPixel(event, data);
 
 // Lien sortant vers le site (fiche, configurateur) : les paramètres de la pub suivent le visiteur.
 export const withAttribution = (href) => {

@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { HomePage } from "./screens/HomePage";
 import { LandingPage, ThankYouPage } from "./screens/Landing";
+import { CookieBanner } from "./screens/Landing/components/CookieBanner";
 import { SiteRedirect } from "./screens/Landing/components/SiteRedirect";
 
 createRoot(document.getElementById("app")).render(
@@ -14,6 +15,7 @@ createRoot(document.getElementById("app")).render(
         <Route path="/lp/:vertical/merci" element={<ThankYouPage />} />
         <Route path="*" element={<SiteRedirect />} />
       </Routes>
+      <CookieBanner />
     </BrowserRouter>
   </StrictMode>,
 );
