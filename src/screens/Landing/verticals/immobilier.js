@@ -56,6 +56,7 @@ export const immobilier = {
     // Packs de la page (maquette du 02/11/2026) : leur prix et leurs produits partent avec le lead.
     items: [
       {
+        id: "265dce6d-454a-437d-a975-db4bb5acf466",
         name: "Pack iWin",
         tagline: "Votre agence dans un format mobile",
         price: "78,90",
@@ -71,6 +72,7 @@ export const immobilier = {
         url: "https://www.itakecare.be/catalogue/pack/265dce6d-454a-437d-a975-db4bb5acf466",
       },
       {
+        id: "fd591ae8-90ca-4668-9dd8-9c88984f9cb5",
         name: "Pack iDiscovery",
         tagline: "Votre univers Apple, de l'agence au terrain",
         price: "89,90",
