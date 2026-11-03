@@ -155,11 +155,6 @@ const Header = ({ onStart }) => (
         <img src={logo} alt="iTakecare" width="167" height="38" />
         <span>pour les soignants</span>
       </a>
-      <nav aria-label="Navigation de la page">
-        <a href="#packs">Les packs</a>
-        <a href="#accompagnement">L’accompagnement</a>
-        <a href="#questions">Vos questions</a>
-      </nav>
       <a className="button button-small" href="#offre" onClick={() => onStart()}>
         Mon offre personnalisée <Svg id="arrow" />
       </a>

@@ -48,18 +48,28 @@ export const setConsent = (value) => {
   }
   if (value === "granted") {
     loadPixel();
-    pending.splice(0).forEach(([event, data]) => window.fbq("track", event, data));
+    pending.splice(0).forEach(([event, data, options]) => window.fbq("track", event, data, options));
   } else {
     pending.length = 0;
   }
 };
 
-export const trackPixel = (event, data) => {
+// `eventId` : identifiant partagé avec l'envoi serveur (API Conversions), pour que Meta ne compte l'événement qu'une fois.
+export const trackPixel = (event, data, eventId) => {
+  const options = eventId ? { eventID: eventId } : undefined;
   const consent = getConsent();
   if (consent === "granted") {
     loadPixel();
-    window.fbq("track", event, data);
+    window.fbq("track", event, data, options);
   } else if (!consent) {
-    pending.push([event, data]);
+    pending.push([event, data, options]);
   }
+};
+
+// Cookies du pixel (_fbp, _fbc), transmis au serveur pour améliorer la correspondance.
+export const readPixelCookies = () => {
+  const cookies = Object.fromEntries(
+    document.cookie.split("; ").map((part) => [part.split("=")[0], decodeURIComponent(part.split("=").slice(1).join("="))]),
+  );
+  return { fbp: cookies._fbp, fbc: cookies._fbc };
 };

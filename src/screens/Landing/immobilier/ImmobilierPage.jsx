@@ -151,11 +151,6 @@ const Header = ({ onStart }) => (
   <header className="site-header">
     <div className="container nav">
       <Brand href="#main" label="iTakecare, haut de page" />
-      <nav aria-label="Navigation de la page">
-        <a href="#packs">Les packs</a>
-        <a href="#quotidien">Votre quotidien</a>
-        <a href="#questions">Vos questions</a>
-      </nav>
       <a className="button button-small" href="#offre" onClick={() => onStart()}>
         Mon offre immo <Svg id="arrow" />
       </a>
@@ -534,6 +529,50 @@ const Steps = () => (
   </section>
 );
 
+const COMPARISON = [
+  ["Au démarrage", "Tout le matériel à payer", "Un loyer mensuel fixe"],
+  ["Maintenance", "À organiser vous-même", "Incluse dans le loyer"],
+  ["En cas de panne", "Réparation à gérer", "Un interlocuteur, garantie incluse"],
+  ["Nouvel agent à équiper", "Un nouvel achat", "Un poste en plus, sans gros achat"],
+  ["Votre matériel", "Neuf ou d’occasion", "Reconditionné, testé et garanti"],
+];
+
+const Comparison = ({ onStart }) => (
+  <section className="comparison-section">
+    <div className="container comparison-grid">
+      <div>
+        <p className="eyebrow">UNE AUTRE FAÇON DE S’ÉQUIPER</p>
+        <h2>
+          Votre trésorerie
+          <br />
+          reste sur le terrain.
+        </h2>
+        <p>Un loyer fixe pour l’ordinateur, le smartphone et leur suivi. Vos fonds restent disponibles pour votre agence.</p>
+        <a className="text-link" href="#offre" onClick={() => onStart()}>
+          Construire mon offre immo <span>↗</span>
+        </a>
+      </div>
+      <div className="comparison-table" role="table" aria-label="Comparaison achat et leasing">
+        <div className="comparison-row table-head" role="row">
+          <span role="columnheader">Votre quotidien</span>
+          <span role="columnheader">Achat classique</span>
+          <strong role="columnheader">iTakecare</strong>
+        </div>
+        {COMPARISON.map(([label, buy, lease]) => (
+          <div className="comparison-row" role="row" key={label}>
+            <span role="rowheader">{label}</span>
+            <span role="cell">{buy}</span>
+            <strong role="cell">
+              {lease} <span>✓</span>
+            </strong>
+          </div>
+        ))}
+        <p className="table-note">Le leasing implique un contrat de 36 mois. Les modalités figurent dans votre offre.</p>
+      </div>
+    </div>
+  </section>
+);
+
 const Faq = ({ onStart }) => {
   const [open, setOpen] = useState(0);
   return (
@@ -894,6 +933,7 @@ export const ImmobilierPage = () => {
         <Day onStart={start} />
         <Support />
         <Steps />
+        <Comparison onStart={start} />
         <Faq onStart={start} />
         <Offer form={{ step, setStep, priority, setPriority, pack, setPack }} />
         <div className="conditions container">

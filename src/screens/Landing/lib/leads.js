@@ -1,6 +1,6 @@
 // Suivi des campagnes (UTM / fbclid), événements Meta Pixel et envoi des leads.
 
-import { trackPixel } from "./pixel";
+import { getConsent, readPixelCookies, trackPixel } from "./pixel";
 
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid"];
 const STORAGE_KEY = "itc_attribution";
@@ -20,8 +20,11 @@ export const captureAttribution = () => {
   }
 };
 
+// Identifiant du dernier lead envoyé : l'événement Lead du pixel le réutilise (dédoublonnage avec le serveur).
+let lastLeadEventId = null;
+
 // Événement Meta Pixel, envoyé seulement si le visiteur accepte les cookies (voir pixel.js).
-export const track = (event, data = {}) => trackPixel(event, data);
+export const track = (event, data = {}) => trackPixel(event, data, event === "Lead" ? lastLeadEventId : undefined);
 
 // Lien sortant vers le site (fiche, configurateur) : les paramètres de la pub suivent le visiteur.
 export const withAttribution = (href) => {
@@ -41,7 +44,17 @@ const API_URL = import.meta.env.VITE_ITAKECARE_API_URL;
 const ANON_KEY = import.meta.env.VITE_ITAKECARE_ANON_KEY;
 
 export const submitLead = async (lead) => {
-  const payload = { ...lead, ...captureAttribution(), page: window.location.pathname };
+  const eventId = crypto.randomUUID();
+  const adConsent = getConsent() === "granted";
+  const payload = {
+    ...lead,
+    ...captureAttribution(),
+    page: window.location.pathname,
+    pageUrl: window.location.href,
+    eventId,
+    adConsent,
+    ...(adConsent && readPixelCookies()),
+  };
 
   const response = await fetch(`${API_URL}/functions/v1/landing-lead`, {
     method: "POST",
@@ -53,4 +66,5 @@ export const submitLead = async (lead) => {
     body: JSON.stringify(payload),
   });
   if (!response.ok) throw new Error(`Lead non envoyé (${response.status})`);
+  lastLeadEventId = eventId;
 };
