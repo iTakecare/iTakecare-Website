@@ -12,18 +12,20 @@ import { Footer } from "../sante/SantePage";
 import heroImage from "./assets/hero-mobilite.webp";
 import agenceImage from "./assets/agence-performance.webp";
 import visiteImage from "./assets/visite-connectee.webp";
-import iwinImage from "../sante/assets/pack-iwin.webp";
-import idiscoveryImage from "../sante/assets/pack-idiscovery.webp";
+import packPcImage from "../sante/assets/pack-ultra-portable-pc.webp";
+import packAppleImage from "../sante/assets/pack-ultra-portable-apple.webp";
+import packMobileImage from "../sante/assets/pack-ultra-mobile.webp";
 import logo from "../sante/assets/logo-itakecare.png";
 import "./immobilier.css";
 
 const PRIVACY_URL = "https://www.itakecare.be/politique-confidentialite";
 
-// Choix « pack » du formulaire → pack du catalogue (prix + produits pour Leazr).
+// Choix « pack » du formulaire → pack Pro Immo de Leazr (identifiant, prix et produits partent avec le lead).
 const PACK_CHOICES = {
-  iWin: { label: "iWin · Windows", detail: "78,90 € HTVA / mois · 36 mois", packName: "Pack iWin" },
-  iDiscovery: { label: "iDiscovery · Apple", detail: "89,90 € HTVA / mois · 36 mois", packName: "Pack iDiscovery" },
-  Conseil: { label: "Un conseil ou une offre pour mon équipe", detail: "Construisons la solution ensemble", packName: null },
+  PC: { label: "Pack PC · Windows", detail: "84,80 € HTVA / mois · 36 mois" },
+  Apple: { label: "Pack Apple · macOS", detail: "125,80 € HTVA / mois · 36 mois" },
+  "Ultra Mobile": { label: "Pack Apple Ultra Mobile", detail: "203,75 € HTVA / mois · 36 mois" },
+  Conseil: { label: "Un conseil ou une offre pour mon équipe", detail: "Construisons la solution ensemble" },
 };
 
 const PRIORITIES = [
@@ -215,10 +217,10 @@ const Hero = ({ onStart }) => (
         </div>
       </div>
       <div className="hero-price">
-        <span>Ordinateur + smartphone + accessoires, dès</span>
+        <span>Ordinateur + smartphone + écran, dès</span>
         <div>
           <strong>
-            78,90<span> €</span>
+            84,80<span> €</span>
           </strong>
           <span>HTVA / mois</span>
         </div>
@@ -293,10 +295,10 @@ const PackCard = ({ apple, tag, image, alt, name, tagline, os, price, equipment,
         <Svg id="check" /> Maintenance et garantie incluses
       </p>
       <a className={`button${apple ? "" : " button-outline"}`} href="#offre" onClick={() => onStart({ pack: packKey })}>
-        Personnaliser mon {packKey} <Svg id="arrow" />
+        Recevoir mon offre {packKey} <Svg id="arrow" />
       </a>
       <a className="catalogue" href={url} target="_blank" rel="noopener noreferrer">
-        Voir la fiche catalogue <span>↗</span>
+        Voir et personnaliser la fiche <span>↗</span>
       </a>
     </div>
   </article>
@@ -313,47 +315,65 @@ const Packs = ({ onStart }) => (
         </h2>
       </div>
       <p>
-        Deux univers. Un même objectif :{" "}
+        Trois univers. Un même objectif :{" "}
         <br />
         vous équiper pour avancer.
       </p>
     </div>
-    <div className="pack-grid">
+    <div className="pack-grid pack-grid-3">
       <PackCard
         tag="LA POLYVALENCE WINDOWS"
-        image={iwinImage}
-        alt="Illustration du pack iWin : ordinateur Windows, smartphone, hub et souris."
-        name="Le pack iWin"
-        tagline="Votre agence dans un format mobile."
+        image={packPcImage}
+        alt="Illustration du pack PC : ordinateur Windows, écran, smartphone et écouteurs."
+        name="Le pack PC"
+        tagline="Votre agence, à la maison comme sur le terrain."
         os="Windows"
-        price="78,90"
+        price="84,80"
         equipment={[
-          ["Ordinateur", "HP ProBook 440 G11"],
+          ["Ordinateur", "HP ProBook 4 G1iR 16"],
           ["Smartphone", "Samsung Galaxy S24 Ultra"],
-          ["Accessoires", "Hub USB-C · MX Anywhere 3S"],
-          ["Bureautique", "Microsoft Office 2024"],
+          ["Écran", "Samsung 27 pouces"],
+          ["Et aussi", "AirPods 4"],
         ]}
-        packKey="iWin"
-        url="https://www.itakecare.be/catalogue/pack/265dce6d-454a-437d-a975-db4bb5acf466"
+        packKey="PC"
+        url="https://www.itakecare.be/proimmo/pack/0"
         onStart={onStart}
       />
       <PackCard
         apple
         tag="LA FLUIDITÉ APPLE"
-        image={idiscoveryImage}
-        alt="Illustration du pack iDiscovery : MacBook, iPhone, hub et souris."
-        name="Le pack iDiscovery"
+        image={packAppleImage}
+        alt="Illustration du pack Apple : MacBook, écran, iPhone et écouteurs."
+        name="Le pack Apple"
         tagline="Votre univers Apple, de l’agence au terrain."
         os="macOS"
-        price="89,90"
+        price="125,80"
         equipment={[
-          ["Ordinateur", "MacBook Air 13 M4"],
-          ["Smartphone", "iPhone 16 Pro Max"],
-          ["Accessoires", "Hub USB-C · Magic Mouse 2"],
-          ["Bureautique", "Microsoft Office 2024"],
+          ["Ordinateur", "MacBook Air 15 M4"],
+          ["Smartphone", "iPhone 17 Pro Max"],
+          ["Écran", "Samsung 27 pouces"],
+          ["Et aussi", "AirPods 4"],
         ]}
-        packKey="iDiscovery"
-        url="https://www.itakecare.be/catalogue/pack/fd591ae8-90ca-4668-9dd8-9c88984f9cb5"
+        packKey="Apple"
+        url="https://www.itakecare.be/proimmo/pack/1"
+        onStart={onStart}
+      />
+      <PackCard
+        tag="L’AGENCE DANS LA POCHE"
+        image={packMobileImage}
+        alt="Illustration du pack Apple Ultra Mobile : iPad Pro avec clavier, iPhone et écouteurs."
+        name="Le pack Apple Ultra Mobile"
+        tagline="Toute la puissance Apple, pour les visites et l’agence."
+        os="macOS"
+        price="203,75"
+        equipment={[
+          ["Ordinateur", "MacBook Pro 14 M4"],
+          ["Tablette", "iPad Pro 13 pouces + clavier"],
+          ["Smartphone", "iPhone 17 Pro Max"],
+          ["Et aussi", "AirPods 4"],
+        ]}
+        packKey="Ultra Mobile"
+        url="https://www.itakecare.be/proimmo/pack/2"
         onStart={onStart}
       />
     </div>
@@ -669,14 +689,13 @@ const LeadForm = ({ form }) => {
       return setError("Merci d’accepter d’être recontacté·e pour recevoir votre offre.");
     }
 
-    const choice = PACK_CHOICES[pack];
-    const catalogPack = immobilier.packs.items.find((item) => item.name === choice.packName);
+    const catalogPack = immobilier.packs.items.find((item) => item.key === pack);
     setSending(true);
     try {
       await submitLead({
         vertical: immobilier.slug,
         profile: `Priorité ${priority.toLowerCase()}`,
-        need: choice.packName ?? "Conseil ou offre équipe",
+        need: catalogPack?.name ?? "Conseil ou offre équipe",
         packPrice: catalogPack?.price,
         packProducts: catalogPack?.products ?? [],
         packId: catalogPack?.id,
@@ -901,7 +920,7 @@ const MobileCta = ({ onStart }) => {
       <div>
         <small>Pack ordinateur + smartphone dès</small>
         <strong>
-          78,90 € <span>HTVA / mois</span>
+          84,80 € <span>HTVA / mois</span>
         </strong>
       </div>
       <a className="button button-small" href="#offre" onClick={() => onStart()}>

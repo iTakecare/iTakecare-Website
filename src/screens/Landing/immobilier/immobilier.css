@@ -13,3 +13,7 @@
 @media(max-width:600px){.immo-lp .field-row{grid-template-columns:1fr;gap:0}}
 /* Très petits écrans : le texte des boutons de carte passe à la ligne au lieu d'élargir la carte. */
 @media(max-width:360px){.immo-lp .pack-body>.button{white-space:normal;text-align:left;gap:12px}}
+/* Trois packs Pro Immo : trois colonnes sur grand écran, une seule en dessous de 1180 px. */
+.immo-lp .pack-grid-3{grid-template-columns:repeat(3,1fr)}
+.immo-lp .pack-grid-3 .price strong{white-space:nowrap}
+@media(max-width:1180px){.immo-lp .pack-grid-3{grid-template-columns:1fr;max-width:560px;margin:0 auto}}

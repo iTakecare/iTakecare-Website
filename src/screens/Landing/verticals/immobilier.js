@@ -22,7 +22,7 @@ export const immobilier = {
       "Zéro investissement : équipez un nouvel agent en quelques jours",
     ],
     cta: "Recevoir mon offre agent",
-    priceFrom: "89,90",
+    priceFrom: "84,80",
     // TODO : remplacer par une vraie photo (agent devant un bien avec iPad/MacBook).
     image: null,
     imagePlaceholder: "Photo : agent immobilier en visite, iPad et MacBook en main",
@@ -53,39 +53,41 @@ export const immobilier = {
     title: "Des packs pensés pour [le terrain]",
     subtitle:
       "Ordinateur, smartphone et accessoires réunis dans un seul loyer. Pour un agent seul ou toute l'agence, configurable sur devis.",
-    // Packs de la page (maquette du 02/11/2026) : leur prix et leurs produits partent avec le lead.
+    // Packs « Pro Immo » de la page partenaire https://www.itakecare.be/proimmo (packs Leazr, créés le 03/11/2026).
+    // `id` part avec le lead : Leazr reprend le pack exact. Les noms de produits sont ceux du catalogue.
     items: [
       {
-        id: "265dce6d-454a-437d-a975-db4bb5acf466",
-        name: "Pack iWin",
-        tagline: "Votre agence dans un format mobile",
-        price: "78,90",
-        image:
-          "https://api.leazr.co/storage/v1/object/public/pack-images/company-c1ce66bb-3ad2-474d-b477-583baa7ff1c0/packs/image-1781526388434-nscsa9i7esk.png",
-        products: [
-          "HP ProBook 440 G11",
-          "Samsung Galaxy S24 Ultra",
-          "Hub USB-C Ugreen Revodock 105",
-          "Souris MX Anywhere 3S",
-          "Microsoft Office 2024",
-        ],
-        url: "https://www.itakecare.be/catalogue/pack/265dce6d-454a-437d-a975-db4bb5acf466",
+        key: "PC",
+        id: "8fc9a5cf-730b-405f-b9bf-87d076677286",
+        name: "Pro Immo - Pack PC",
+        tagline: "Windows, écran et smartphone Samsung",
+        price: "84,80",
+        products: ["ProBook 4 G1iR 16", "Samsung Galaxy S24 Ultra", "Ecran SAMSUNG 27 pouces", "Apple AirPods 4"],
+        url: "https://www.itakecare.be/proimmo/pack/0",
       },
       {
-        id: "fd591ae8-90ca-4668-9dd8-9c88984f9cb5",
-        name: "Pack iDiscovery",
-        tagline: "Votre univers Apple, de l'agence au terrain",
-        price: "89,90",
-        image:
-          "https://api.leazr.co/storage/v1/object/public/pack-images/company-c1ce66bb-3ad2-474d-b477-583baa7ff1c0/packs/image-1781526139571-nhf912jdldp.png",
+        key: "Apple",
+        id: "a2161226-3695-4bc1-8123-30ea90204894",
+        name: "Pro Immo - Pack Apple",
+        tagline: "MacBook, écran et iPhone",
+        price: "125,80",
+        products: ["MacBook Air 15 M4", "iPhone 17 Pro Max", "Ecran SAMSUNG 27 pouces", "Apple AirPods 4"],
+        url: "https://www.itakecare.be/proimmo/pack/1",
+      },
+      {
+        key: "Ultra Mobile",
+        id: "40c82bb1-6476-4215-8e0a-bce2dbc61422",
+        name: "Pro Immo - Pack Apple Ultra Mobile",
+        tagline: "MacBook Pro, iPad Pro et iPhone",
+        price: "203,75",
         products: [
-          "MacBook Air 13 M4",
-          "iPhone 16 Pro Max",
-          "Hub USB-C Ugreen Revodock 105",
-          "Magic Mouse 2",
-          "Microsoft Office 2024",
+          "MacBook Pro 14 M4",
+          "iPad Pro M4 13 pouces",
+          "Logitech Combo Touch for iPad Pro 13",
+          "iPhone 17 Pro Max",
+          "Apple AirPods 4",
         ],
-        url: "https://www.itakecare.be/catalogue/pack/fd591ae8-90ca-4668-9dd8-9c88984f9cb5",
+        url: "https://www.itakecare.be/proimmo/pack/2",
       },
     ],
     note: "Prix HTVA par mois, leasing sur 36 mois. Maintenance, garantie et remplacement 24h inclus.",
