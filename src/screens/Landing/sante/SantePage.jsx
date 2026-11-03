@@ -2,7 +2,7 @@
 // (palette sauge / crème / vert profond, visuels générés, parcours en 8 temps).
 // Le formulaire est le vrai : il passe par submitLead → landing-lead → Leazr (source funnelsante).
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchPartnerPacks, formatMonthly } from "../lib/catalog";
 import { submitLead, track, withAttribution } from "../lib/leads";
@@ -439,50 +439,108 @@ const Steps = () => (
   </section>
 );
 
-const Comparison = ({ onStart }) => (
-  <section className="comparison-section">
-    <div className="container comparison-grid">
-      <div>
-        <p className="eyebrow">UNE AUTRE FAÇON DE S’ÉQUIPER</p>
-        <h2>
-          Votre trésorerie
-          <br />
-          respire aussi.
-        </h2>
-        <p>
-          Un loyer fixe pour le matériel et son suivi.
-          <br />
-          Vous savez où vous allez, mois après mois.
-        </p>
-        <a className="text-link" href="#offre" onClick={() => onStart()}>
-          Construire mon offre <span>↗</span>
-        </a>
-      </div>
-      <div className="comparison-table" role="table" aria-label="Comparaison achat et leasing">
-        <div className="comparison-row table-head" role="row">
-          <span role="columnheader">Votre quotidien</span>
-          <span role="columnheader">Achat classique</span>
-          <strong role="columnheader">iTakecare</strong>
+// Pour chaque ligne : le problème vécu sans iTakecare, puis ce que ça change.
+const COMPARISON = [
+  {
+    label: "Au démarrage",
+    buy: "Prix du matériel à payer",
+    lease: "Un loyer mensuel",
+    pain: "Acheter, c’est sortir d’un coup le prix de tout votre matériel.",
+    gain: "Avec iTakecare, vous payez un loyer fixe chaque mois : votre trésorerie reste disponible et votre budget est prévisible.",
+  },
+  {
+    label: "Maintenance",
+    buy: "À organiser",
+    lease: "Déjà incluse",
+    check: true,
+    pain: "Un souci technique, une mise à jour qui bloque : sans service inclus, c’est à vous de trouver une solution entre deux patients.",
+    gain: "La maintenance est comprise dans le loyer. Votre conseiller en Belgique s’en charge, vous restez avec vos patients.",
+  },
+  {
+    label: "En cas de panne",
+    buy: "Réparation à gérer",
+    lease: "SLA Ultra : remplacé sous 24 h*",
+    check: true,
+    pain: "Un ordinateur en panne, c’est un agenda et une facturation à l’arrêt le temps de la réparation.",
+    gain: "Avec le SLA Ultra, le matériel défectueux est remplacé sous 24 h* : vous reprenez votre activité sans attendre.",
+  },
+  {
+    label: "Votre matériel",
+    buy: "Neuf ou d’occasion",
+    lease: "Reconditionné garanti",
+    check: true,
+    pain: "Le neuf pèse sur le budget, et une occasion laisse souvent un doute sur son état.",
+    gain: "Votre matériel est reconditionné, testé et garanti pendant le contrat : un équipement fiable, plus abordable que le neuf.",
+  },
+];
+
+// Avec une souris, l'explication s'affiche en bulle au survol (CSS).
+// Au toucher, chaque ligne se déplie comme la FAQ, la première ouverte par défaut.
+const canHover = () => window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+const Comparison = ({ onStart }) => {
+  const [hover] = useState(canHover);
+  const [open, setOpen] = useState(hover ? null : 0);
+  return (
+    <section className="comparison-section">
+      <div className="container comparison-grid">
+        <div>
+          <p className="eyebrow">UNE AUTRE FAÇON DE S’ÉQUIPER</p>
+          <h2>
+            Votre trésorerie
+            <br />
+            respire aussi.
+          </h2>
+          <p>
+            Un loyer fixe pour le matériel et son suivi.
+            <br />
+            Vous savez où vous allez, mois après mois.
+          </p>
+          <a className="text-link" href="#offre" onClick={() => onStart()}>
+            Construire mon offre <span>↗</span>
+          </a>
         </div>
-        {[
-          ["Au démarrage", "Prix du matériel à payer", "Un loyer mensuel", false],
-          ["Maintenance", "À organiser", "Déjà incluse", true],
-          ["En cas de panne", "Réparation à gérer", "SLA Ultra : remplacé sous 24 h*", true],
-          ["Votre matériel", "Neuf ou d’occasion", "Reconditionné garanti", true],
-        ].map(([label, buy, lease, check]) => (
-          <div className="comparison-row" role="row" key={label}>
-            <span role="rowheader">{label}</span>
-            <span role="cell">{buy}</span>
-            <strong role="cell">
-              {lease} {check && <span>✓</span>}
-            </strong>
+        <div className="comparison-table" role="table" aria-label="Comparaison achat et leasing">
+          <div className="comparison-row table-head" role="row">
+            <span role="columnheader">Votre quotidien</span>
+            <span role="columnheader">Achat classique</span>
+            <strong role="columnheader">iTakecare</strong>
           </div>
-        ))}
-        <p className="table-note">Le leasing implique un contrat de 36 mois. Les modalités figurent dans votre offre.</p>
+          {COMPARISON.map(({ label, buy, lease, check, pain, gain }, i) => (
+            <Fragment key={label}>
+              <div
+                className={`comparison-row${open === i ? " open" : ""}`}
+                role="row"
+                onClick={() => !hover && setOpen(open === i ? null : i)}
+              >
+                <span role="rowheader">
+                  <button
+                    type="button"
+                    className="row-trigger"
+                    aria-expanded={hover ? undefined : open === i}
+                    aria-describedby={`comparison-tip-${i}`}
+                  >
+                    {label}
+                    <span className="row-icon" aria-hidden="true" />
+                  </button>
+                </span>
+                <span role="cell">{buy}</span>
+                <strong role="cell">
+                  {lease} {check && <span>✓</span>}
+                </strong>
+              </div>
+              <div className="row-tip" id={`comparison-tip-${i}`}>
+                <p>{pain}</p>
+                <p>{gain}</p>
+              </div>
+            </Fragment>
+          ))}
+          <p className="table-note">Le leasing implique un contrat de 36 mois. Les modalités figurent dans votre offre.</p>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const Faq = ({ onStart }) => {
   const [open, setOpen] = useState(0);

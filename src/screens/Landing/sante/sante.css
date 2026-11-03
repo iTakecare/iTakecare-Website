@@ -18,3 +18,42 @@ html:has(.sante-lp){scroll-behavior:smooth;scroll-padding-top:105px}
 @media(max-width:600px){.sante-lp .pack-grid{grid-template-columns:1fr;gap:24px}.sante-lp .pack-card:last-child{grid-column:auto;width:auto}}
 /* Très petits écrans : le texte des boutons de carte passe à la ligne au lieu d'élargir la carte. */
 @media(max-width:360px){.sante-lp .pack-body>.button{white-space:normal;text-align:left;gap:12px}}
+/* Tableau comparatif : chaque ligne explique le problème vécu, puis ce que ça change.
+   Avec une souris, bulle au survol ; au toucher, la ligne se déplie comme la FAQ. */
+.sante-lp .comparison-table{position:relative;overflow:visible}
+.sante-lp .table-head{border-radius:11px 11px 0 0}
+.sante-lp .table-head>strong{border-top-right-radius:11px}
+.sante-lp .comparison-grid .comparison-table>p.table-note{font-size:13px;margin:0;padding:14px}
+.sante-lp .row-trigger{display:inline-flex;align-items:center;gap:8px;padding:0;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:inherit}
+.sante-lp .row-icon{position:relative;flex-shrink:0;width:15px;height:15px}
+.sante-lp .row-tip p{margin:0}
+.sante-lp .row-tip p+p{margin-top:6px}
+@media(hover:hover) and (pointer:fine){
+.sante-lp .comparison-row:not(.table-head){cursor:help;transition:background .15s}
+.sante-lp .comparison-row:not(.table-head):hover{background:#f2f3ea}
+.sante-lp .row-icon{border:1px solid currentColor;border-radius:50%;opacity:.5}
+.sante-lp .row-icon:after{content:'i';position:absolute;inset:0;display:grid;place-items:center;font-size:10px;font-weight:700;line-height:1}
+.sante-lp .row-tip{position:absolute;left:14px;z-index:5;width:min(440px,calc(100% - 28px));margin-top:-8px;padding:14px 17px;border-radius:10px;background:var(--ink);color:#fff;font-size:13.5px;line-height:1.55;box-shadow:0 14px 34px #173c3c38;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .15s,transform .15s,visibility .15s;pointer-events:none}
+.sante-lp .row-tip:before{content:'';position:absolute;top:-6px;left:22px;width:12px;height:12px;background:var(--ink);transform:rotate(45deg)}
+.sante-lp .row-tip p:first-child{color:#bfd0c5}
+.sante-lp .row-tip p:last-child{font-weight:500}
+.sante-lp .comparison-row:hover+.row-tip{opacity:1;visibility:visible;transform:none}
+.sante-lp .comparison-row:has(:focus-visible)+.row-tip{opacity:1;visibility:visible;transform:none}
+}
+@media(hover:none),(pointer:coarse){
+.sante-lp .comparison-row:not(.table-head){cursor:pointer}
+.sante-lp .row-icon:before,.sante-lp .row-icon:after{content:'';position:absolute;top:7px;left:2px;width:11px;height:1.5px;background:var(--green);transition:transform .2s}
+.sante-lp .row-icon:after{transform:rotate(90deg)}
+.sante-lp .comparison-row.open .row-icon:after{transform:rotate(0)}
+.sante-lp .comparison-row.open{border-bottom:0}
+.sante-lp .row-tip{display:none;padding:2px 14px 16px;background:#f1f5ec;border-bottom:1px solid #dfe4d7;font-size:14px;line-height:1.6}
+.sante-lp .comparison-row.open+.row-tip{display:block}
+.sante-lp .comparison-row.open>:not(strong){background:#f1f5ec}
+.sante-lp .row-tip p:first-child{color:var(--muted)}
+.sante-lp .row-tip p:last-child{color:var(--ink);font-weight:500}
+}
+@media(max-width:600px){
+.sante-lp .comparison-row:not(.table-head){position:relative}
+.sante-lp .row-icon{position:absolute;right:11px;top:50%;margin-top:-7.5px}
+.sante-lp .comparison-row:not(.table-head)>strong{padding-right:34px}
+}
