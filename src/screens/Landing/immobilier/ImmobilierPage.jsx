@@ -4,7 +4,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { GoogleRating } from "../components/GoogleRating";
-import { BookingWidget } from "../components/BookingWidget";
+import { BookingStep, BookingWidget } from "../components/BookingWidget";
 import { useNavigate } from "react-router-dom";
 import { isValidPhone, submitLead, track } from "../lib/leads";
 import { immobilier } from "../verticals/immobilier";
@@ -647,6 +647,7 @@ const LeadForm = ({ form }) => {
   const [invalid, setInvalid] = useState(null);
   const [error, setError] = useState(null);
   const [sending, setSending] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const legendRefs = useRef([]);
 
   const goTo = (value) => {
@@ -703,7 +704,7 @@ const LeadForm = ({ form }) => {
         consent: true,
       });
       track("Lead", { content_category: immobilier.slug });
-      navigate(`/lp/${immobilier.slug}/merci`);
+      setSubmitted(true);
     } catch {
       setSending(false);
       setError("L’envoi a échoué. Vérifiez vos informations et réessayez dans un instant.");
@@ -716,6 +717,8 @@ const LeadForm = ({ form }) => {
     onChange: update(key),
     "aria-invalid": invalid === key ? "true" : undefined,
   });
+
+  if (submitted) return <BookingStep category={immobilier.slug} onFinish={() => navigate(`/lp/${immobilier.slug}/merci`)} />;
 
   return (
     <form onSubmit={handleSubmit} noValidate>

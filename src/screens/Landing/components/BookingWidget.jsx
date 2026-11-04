@@ -1,6 +1,8 @@
-// Prise de RDV avec un conseiller sur la page de remerciement : créneaux libres et réservation
-// via la fonction Leazr `appointment-booking`, avec le jeton de l'offre gardé par submitLead.
-// Sans jeton (page rechargée dans un autre onglet, stockage bloqué) ou sans créneau, rien ne s'affiche.
+// Prise de RDV avec un conseiller, par téléphone ou en visio au choix du prospect : créneaux libres
+// et réservation via la fonction Leazr `appointment-booking`, avec le jeton de l'offre gardé par submitLead.
+// Affichée en dernière étape (facultative) des formulaires (BookingStep), puis sur la page de remerciement.
+// Sans jeton (page rechargée dans un autre onglet, stockage bloqué) ou sans créneau, rien ne s'affiche
+// et `onUnavailable` est appelé.
 
 import React, { useEffect, useMemo, useState } from "react";
 import { BOOKING_TOKEN_KEY, track } from "../lib/leads";
@@ -18,9 +20,15 @@ const readToken = () => {
 
 const formatter = (timeZone, options) => new Intl.DateTimeFormat("fr-BE", { timeZone, ...options });
 
-export const BookingWidget = ({ category }) => {
+const MODES = [
+  { value: "phone", label: "Par téléphone", detail: "Votre conseiller vous appelle" },
+  { value: "video", label: "En visio", detail: "Lien envoyé par e-mail" },
+];
+
+export const BookingWidget = ({ category, title = "Choisissez le moment de notre échange", onBooked, onUnavailable }) => {
   const token = useMemo(readToken, []);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(undefined);
+  const [mode, setMode] = useState("phone");
   const [day, setDay] = useState(null);
   const [selected, setSelected] = useState(null);
   const [sending, setSending] = useState(false);
@@ -38,7 +46,12 @@ export const BookingWidget = ({ category }) => {
 
   useEffect(() => {
     if (token) load();
+    else onUnavailable?.();
   }, [token]);
+
+  useEffect(() => {
+    if (data === null || (data && !data.appointment && !data.slots?.length)) onUnavailable?.();
+  }, [data]);
 
   const timeZone = data?.timezone || "Europe/Brussels";
   const days = useMemo(() => {
@@ -55,7 +68,8 @@ export const BookingWidget = ({ category }) => {
     if (days.length && !days.some((d) => d.key === day)) setDay(days[0].key);
   }, [days]);
 
-  if (!token || !data) return null;
+  if (!token || data === null) return null;
+  if (data === undefined) return <p className="booking-loading">Recherche des créneaux libres…</p>;
 
   const dayLabel = formatter(timeZone, { weekday: "short", day: "numeric", month: "short" });
   const timeLabel = formatter(timeZone, { hour: "2-digit", minute: "2-digit" });
@@ -85,12 +99,13 @@ export const BookingWidget = ({ category }) => {
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, start: selected }),
+        body: JSON.stringify({ token, start: selected, meeting_mode: mode }),
       });
       const result = await response.json().catch(() => ({}));
       if (response.ok || result.appointment) {
         setBooked(result.appointment);
         if (response.ok) track("Schedule", { content_category: category });
+        onBooked?.();
         return;
       }
       setError(result.error || "La réservation n’a pas abouti. Réessayez ou attendez notre appel.");
@@ -108,10 +123,26 @@ export const BookingWidget = ({ category }) => {
 
   return (
     <div className="booking-widget">
-      <p className="booking-title">Choisissez le moment de notre appel</p>
+      <p className="booking-title">{title}</p>
       <p className="booking-hint">
         {minutes} minutes avec un conseiller, pour faire le point et préparer votre offre. Sans engagement.
       </p>
+
+      <div className="booking-modes" role="radiogroup" aria-label="Type de rendez-vous">
+        {MODES.map((m) => (
+          <button
+            key={m.value}
+            type="button"
+            role="radio"
+            aria-checked={mode === m.value}
+            className={mode === m.value ? "is-active" : ""}
+            onClick={() => setMode(m.value)}
+          >
+            <strong>{m.label}</strong>
+            <small>{m.detail}</small>
+          </button>
+        ))}
+      </div>
 
       <div className="booking-days" role="tablist" aria-label="Jour du rendez-vous">
         {days.map((d) => (
@@ -151,9 +182,33 @@ export const BookingWidget = ({ category }) => {
         {sending
           ? "Réservation…"
           : selected
-            ? `Confirmer : ${fullLabel.format(new Date(selected))}`
+            ? `Confirmer : ${fullLabel.format(new Date(selected))}${mode === "video" ? ", en visio" : ""}`
             : "Choisissez un horaire"}
       </button>
     </div>
   );
 };
+
+// Dernière étape des formulaires, après l'envoi du lead : réserver tout de suite ou passer.
+// `onFinish` mène à la page de remerciement (qui affiche le RDV s'il a été pris).
+export const BookingStep = ({ category, onFinish }) => (
+  <div className="booking-step">
+    <div className="form-top">
+      <span>DERNIÈRE ÉTAPE · FACULTATIVE</span>
+      <span>Votre rendez-vous</span>
+    </div>
+    <div className="progress" aria-hidden="true">
+      <span style={{ width: "100%" }} />
+    </div>
+    <fieldset>
+      <legend>Demande envoyée ! On se parle quand ?</legend>
+      <p className="form-hint">Réservez un créneau maintenant, ou laissez votre conseiller vous rappeler sous 24 h.</p>
+      <BookingWidget category={category} title="Votre rendez-vous" onBooked={onFinish} onUnavailable={onFinish} />
+    </fieldset>
+    <div className="form-controls">
+      <button type="button" className="back-button" onClick={onFinish}>
+        Je préfère être rappelé·e →
+      </button>
+    </div>
+  </div>
+);
