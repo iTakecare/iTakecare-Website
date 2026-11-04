@@ -813,11 +813,11 @@ const LeadForm = ({ form }) => {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <div className="form-top">
-        <span>ÉTAPE {step} SUR 3</span>
+        <span>ÉTAPE {step} SUR 4</span>
         <span>Votre offre TPE/PME</span>
       </div>
       <div className="progress" aria-hidden="true">
-        <span style={{ width: `${(step * 100) / 3}%` }} />
+        <span style={{ width: `${(step * 100) / 4}%` }} />
       </div>
 
       {step === 1 && (
@@ -944,6 +944,7 @@ const LeadForm = ({ form }) => {
           {error}
         </p>
       )}
+      {step === 3 && <p className="form-hint">Étape suivante : choisissez votre rendez-vous, par téléphone ou en visio.</p>}
       <div className="form-controls">
         {step > 1 && (
           <button type="button" className="back-button" onClick={() => goTo(step - 1)}>

@@ -202,7 +202,7 @@ export const BookingWidget = ({ category, title = "Choisissez le moment de notre
 export const BookingStep = ({ category, onFinish }) => (
   <div className="booking-step">
     <div className="form-top">
-      <span>DERNIÈRE ÉTAPE · FACULTATIVE</span>
+      <span>ÉTAPE 4 SUR 4 · FACULTATIVE</span>
       <span>Votre rendez-vous</span>
     </div>
     <div className="progress" aria-hidden="true">
