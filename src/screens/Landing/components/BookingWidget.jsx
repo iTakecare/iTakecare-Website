@@ -54,15 +54,18 @@ export const BookingWidget = ({ category, title = "Choisissez le moment de notre
   }, [data]);
 
   const timeZone = data?.timezone || "Europe/Brussels";
+  // Modes proposés par les conseillers (chaque créneau porte les siens) ; le choix n'apparaît que s'il y en a deux.
+  const modes = MODES.filter((m) => (data?.slots ?? []).some((slot) => (slot.modes ?? ["phone"]).includes(m.value)));
+  const activeMode = modes.some((m) => m.value === mode) ? mode : (modes[0]?.value ?? "phone");
   const days = useMemo(() => {
     const byDay = new Map();
     const key = formatter(timeZone, { year: "numeric", month: "2-digit", day: "2-digit" });
-    (data?.slots ?? []).forEach((slot) => {
+    (data?.slots ?? []).filter((slot) => (slot.modes ?? ["phone"]).includes(activeMode)).forEach((slot) => {
       const k = key.format(new Date(slot.start));
       byDay.set(k, [...(byDay.get(k) ?? []), slot]);
     });
     return [...byDay.entries()].map(([k, slots]) => ({ key: k, slots }));
-  }, [data, timeZone]);
+  }, [data, timeZone, activeMode]);
 
   useEffect(() => {
     if (days.length && !days.some((d) => d.key === day)) setDay(days[0].key);
@@ -99,7 +102,7 @@ export const BookingWidget = ({ category, title = "Choisissez le moment de notre
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, start: selected, meeting_mode: mode }),
+        body: JSON.stringify({ token, start: selected, meeting_mode: activeMode }),
       });
       const result = await response.json().catch(() => ({}));
       if (response.ok || result.appointment) {
@@ -128,21 +131,26 @@ export const BookingWidget = ({ category, title = "Choisissez le moment de notre
         {minutes} minutes avec un conseiller, pour faire le point et préparer votre offre. Sans engagement.
       </p>
 
-      <div className="booking-modes" role="radiogroup" aria-label="Type de rendez-vous">
-        {MODES.map((m) => (
-          <button
-            key={m.value}
-            type="button"
-            role="radio"
-            aria-checked={mode === m.value}
-            className={mode === m.value ? "is-active" : ""}
-            onClick={() => setMode(m.value)}
-          >
-            <strong>{m.label}</strong>
-            <small>{m.detail}</small>
-          </button>
-        ))}
-      </div>
+      {modes.length > 1 && (
+        <div className="booking-modes" role="radiogroup" aria-label="Type de rendez-vous">
+          {modes.map((m) => (
+            <button
+              key={m.value}
+              type="button"
+              role="radio"
+              aria-checked={activeMode === m.value}
+              className={activeMode === m.value ? "is-active" : ""}
+              onClick={() => {
+                setMode(m.value);
+                setSelected(null);
+              }}
+            >
+              <strong>{m.label}</strong>
+              <small>{m.detail}</small>
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="booking-days" role="tablist" aria-label="Jour du rendez-vous">
         {days.map((d) => (
@@ -182,7 +190,7 @@ export const BookingWidget = ({ category, title = "Choisissez le moment de notre
         {sending
           ? "Réservation…"
           : selected
-            ? `Confirmer : ${fullLabel.format(new Date(selected))}${mode === "video" ? ", en visio" : ""}`
+            ? `Confirmer : ${fullLabel.format(new Date(selected))}${activeMode === "video" ? ", en visio" : ""}`
             : "Choisissez un horaire"}
       </button>
     </div>
