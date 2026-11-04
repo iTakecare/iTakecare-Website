@@ -606,6 +606,8 @@ const LeadForm = ({ form }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Bouton « Envoyer et prendre rendez-vous » : après l'envoi, choix du créneau dans la carte.
+    const wantsBooking = e.nativeEvent.submitter?.value === "booking";
     if (step === 1) return profession ? goTo(2) : setError("Choisissez votre profession pour continuer.");
     if (step === 2) return pack ? goTo(3) : setError("Choisissez un pack ou demandez conseil pour continuer.");
 
@@ -646,7 +648,8 @@ const LeadForm = ({ form }) => {
         consent: true,
       });
       track("Lead", { content_category: sante.slug });
-      setSubmitted(true);
+      if (wantsBooking) setSubmitted(true);
+      else navigate(`/lp/${sante.slug}/merci`);
     } catch {
       setSending(false);
       setError("L’envoi a échoué. Vérifiez vos informations et réessayez dans un instant.");
@@ -665,11 +668,11 @@ const LeadForm = ({ form }) => {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <div className="form-top">
-        <span>ÉTAPE {step} SUR 4</span>
+        <span>ÉTAPE {step} SUR 3</span>
         <span>Votre offre personnalisée</span>
       </div>
       <div className="progress" aria-hidden="true">
-        <span style={{ width: `${(step * 100) / 4}%` }} />
+        <span style={{ width: `${(step * 100) / 3}%` }} />
       </div>
 
       {step === 1 && (
@@ -785,7 +788,6 @@ const LeadForm = ({ form }) => {
           {error}
         </p>
       )}
-      {step === 3 && <p className="form-hint">Étape suivante : choisissez votre rendez-vous, par téléphone ou en visio.</p>}
       <div className="form-controls">
         {step > 1 && (
           <button type="button" className="back-button" onClick={() => goTo(step - 1)}>
@@ -797,6 +799,11 @@ const LeadForm = ({ form }) => {
           <Svg id="arrow" />
         </button>
       </div>
+      {step === 3 && (
+        <button type="submit" name="intent" value="booking" className="booking-intent" disabled={sending}>
+          Envoyer et prendre rendez-vous <small>par téléphone ou en visio</small>
+        </button>
+      )}
     </form>
   );
 };

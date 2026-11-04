@@ -136,3 +136,37 @@
 .booking-step .booking-widget {
   margin-bottom: 8px;
 }
+
+/* Second bouton d'envoi des formulaires (« Envoyer et prendre rendez-vous »). */
+.booking-intent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px 8px;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: 1px solid var(--line, #d9dfe7);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink, #202735);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.booking-intent small {
+  font-weight: 400;
+  color: var(--muted, #4e5866);
+}
+
+.booking-intent:hover {
+  border-color: var(--accent, var(--green, #1c6555));
+}
+
+.booking-intent:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

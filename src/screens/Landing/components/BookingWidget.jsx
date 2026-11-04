@@ -1,6 +1,6 @@
 // Prise de RDV avec un conseiller, par téléphone ou en visio au choix du prospect : créneaux libres
 // et réservation via la fonction Leazr `appointment-booking`, avec le jeton de l'offre gardé par submitLead.
-// Affichée en dernière étape (facultative) des formulaires (BookingStep), puis sur la page de remerciement.
+// Affichée dans le formulaire quand le prospect demande un RDV (BookingStep), puis sur la page de remerciement.
 // Sans jeton (page rechargée dans un autre onglet, stockage bloqué) ou sans créneau, rien ne s'affiche
 // et `onUnavailable` est appelé.
 
@@ -197,20 +197,20 @@ export const BookingWidget = ({ category, title = "Choisissez le moment de notre
   );
 };
 
-// Dernière étape des formulaires, après l'envoi du lead : réserver tout de suite ou passer.
+// Après l'envoi par le bouton « Envoyer et prendre rendez-vous » : réserver tout de suite ou passer.
 // `onFinish` mène à la page de remerciement (qui affiche le RDV s'il a été pris).
 export const BookingStep = ({ category, onFinish }) => (
   <div className="booking-step">
     <div className="form-top">
-      <span>ÉTAPE 4 SUR 4 · FACULTATIVE</span>
+      <span>DEMANDE ENVOYÉE</span>
       <span>Votre rendez-vous</span>
     </div>
     <div className="progress" aria-hidden="true">
       <span style={{ width: "100%" }} />
     </div>
     <fieldset>
-      <legend>Demande envoyée ! On se parle quand ?</legend>
-      <p className="form-hint">Réservez un créneau maintenant, ou laissez votre conseiller vous rappeler sous 24 h.</p>
+      <legend>Choisissez votre rendez-vous.</legend>
+      <p className="form-hint">Votre demande est bien arrivée. Réservez un créneau, ou laissez votre conseiller vous rappeler sous 24 h.</p>
       <BookingWidget category={category} title="Votre rendez-vous" onBooked={onFinish} onUnavailable={onFinish} />
     </fieldset>
     <div className="form-controls">
